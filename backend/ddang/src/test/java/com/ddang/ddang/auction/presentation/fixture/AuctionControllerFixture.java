@@ -1,21 +1,24 @@
 package com.ddang.ddang.auction.presentation.fixture;
 
-import com.ddang.ddang.auction.application.dto.CreateInfoAuctionDto;
-import com.ddang.ddang.auction.application.dto.ReadAuctionDto;
-import com.ddang.ddang.auction.application.dto.ReadAuctionsDto;
-import com.ddang.ddang.auction.application.dto.ReadChatRoomDto;
-import com.ddang.ddang.auction.application.dto.ReadRegionDto;
-import com.ddang.ddang.auction.application.dto.ReadRegionsDto;
+import com.ddang.ddang.auction.application.dto.response.CreateInfoAuctionDto;
+import com.ddang.ddang.auction.application.dto.response.ReadFullDirectRegionDto;
+import com.ddang.ddang.auction.application.dto.response.ReadFullDirectRegionDto.DirectRegionInfoDto;
+import com.ddang.ddang.auction.application.dto.response.ReadMultipleAuctionDto;
+import com.ddang.ddang.auction.application.dto.response.ReadMultipleAuctionDto.AuctionInfoDto;
+import com.ddang.ddang.auction.application.dto.response.ReadSingleAuctionDto;
 import com.ddang.ddang.auction.domain.AuctionStatus;
 import com.ddang.ddang.auction.presentation.dto.request.CreateAuctionRequest;
 import com.ddang.ddang.authentication.infrastructure.jwt.PrivateClaims;
+import com.ddang.ddang.chat.application.dto.response.ReadChatRoomDto;
 import com.ddang.ddang.configuration.CommonControllerSliceTest;
+import com.ddang.ddang.region.domain.Region;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AuctionControllerFixture extends CommonControllerSliceTest {
@@ -43,10 +46,10 @@ public class AuctionControllerFixture extends CommonControllerSliceTest {
             1_000
     );
     protected ReadChatRoomDto 쪽지방_dto = new ReadChatRoomDto(1L, true);
-    protected ReadAuctionDto 경매_조회_dto;
-    protected ReadAuctionDto 첫번째_경매_조회_dto;
-    protected ReadAuctionDto 두번째_경매_조회_dto;
-    protected ReadAuctionsDto 경매_목록_조회_dto;
+    protected ReadSingleAuctionDto 경매_조회_dto;
+    protected AuctionInfoDto 첫번째_경매_조회_dto;
+    protected AuctionInfoDto 두번째_경매_조회_dto;
+    protected ReadMultipleAuctionDto 경매_목록_조회_dto;
 
 
     private CreateAuctionRequest 유효한_경매_등록_request = new CreateAuctionRequest(
@@ -131,13 +134,19 @@ public class AuctionControllerFixture extends CommonControllerSliceTest {
                 objectMapper.writeValueAsBytes(유효하지_않은_지역_경매_등록_request)
         );
 
-        final ReadRegionsDto 서울특별시_강서구_역삼동 = new ReadRegionsDto(
-                new ReadRegionDto(1L, "서울특별시"),
-                new ReadRegionDto(2L, "강서구"),
-                new ReadRegionDto(3L, "역삼동")
-        );
+        final Region 서울특별시 = new Region("서울특별시");
+        ReflectionTestUtils.setField(서울특별시, "id", 1L);
 
-        경매_조회_dto = new ReadAuctionDto(
+        final Region 강서구 = new Region("강서구");
+        ReflectionTestUtils.setField(강서구, "id", 2L);
+
+        final Region 역삼동 = new Region("역삼동");
+        ReflectionTestUtils.setField(역삼동, "id", 3L);
+
+        강서구.addThirdRegion(역삼동);
+        서울특별시.addSecondRegion(강서구);
+
+        경매_조회_dto = new ReadSingleAuctionDto(
                 1L,
                 "경매 상품 1",
                 "이것은 경매 상품 1 입니다.",
@@ -147,7 +156,13 @@ public class AuctionControllerFixture extends CommonControllerSliceTest {
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                List.of(서울특별시_강서구_역삼동),
+                List.of(
+                        new ReadFullDirectRegionDto(
+                                new DirectRegionInfoDto(서울특별시.getId(), 서울특별시.getName()),
+                                new DirectRegionInfoDto(강서구.getId(), 강서구.getName()),
+                                new DirectRegionInfoDto(역삼동.getId(), 역삼동.getName())
+                        )
+                ),
                 List.of("store-name.png"),
                 2,
                 "main",
@@ -155,13 +170,13 @@ public class AuctionControllerFixture extends CommonControllerSliceTest {
                 1L,
                 "store-name.png",
                 "판매자",
-                3.5d,
+                3.5f,
                 false,
                 AuctionStatus.UNBIDDEN,
                 null
         );
 
-        첫번째_경매_조회_dto = new ReadAuctionDto(
+        첫번째_경매_조회_dto = new AuctionInfoDto(
                 1L,
                 "경매 상품 1",
                 "이것은 경매 상품 1 입니다.",
@@ -171,21 +186,27 @@ public class AuctionControllerFixture extends CommonControllerSliceTest {
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                List.of(서울특별시_강서구_역삼동),
-                List.of("store-name.png"),
+                List.of(
+                        new ReadFullDirectRegionDto(
+                                new DirectRegionInfoDto(서울특별시.getId(), 서울특별시.getName()),
+                                new DirectRegionInfoDto(강서구.getId(), 강서구.getName()),
+                                new DirectRegionInfoDto(역삼동.getId(), 역삼동.getName())
+                        )
+                ),
+                "store-name.png",
                 2,
                 "main",
                 "sub",
                 1L,
                 "store-name.png",
                 "판매자",
-                3.5d,
+                3.5f,
                 false,
                 AuctionStatus.UNBIDDEN,
                 null
         );
 
-        두번째_경매_조회_dto = new ReadAuctionDto(
+        두번째_경매_조회_dto = new AuctionInfoDto(
                 2L,
                 "경매 상품 1",
                 "이것은 경매 상품 1 입니다.",
@@ -195,20 +216,26 @@ public class AuctionControllerFixture extends CommonControllerSliceTest {
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                List.of(서울특별시_강서구_역삼동),
-                List.of("store-name.png"),
+                List.of(
+                        new ReadFullDirectRegionDto(
+                                new DirectRegionInfoDto(서울특별시.getId(), 서울특별시.getName()),
+                                new DirectRegionInfoDto(강서구.getId(), 강서구.getName()),
+                                new DirectRegionInfoDto(역삼동.getId(), 역삼동.getName())
+                        )
+                ),
+                "store-name.png",
                 2,
                 "main",
                 "sub",
                 1L,
                 "store-name.png",
                 "판매자",
-                3.5d,
+                3.5f,
                 false,
                 AuctionStatus.UNBIDDEN,
                 null
         );
 
-        경매_목록_조회_dto = new ReadAuctionsDto(List.of(두번째_경매_조회_dto, 첫번째_경매_조회_dto), true);
+        경매_목록_조회_dto = new ReadMultipleAuctionDto(List.of(두번째_경매_조회_dto, 첫번째_경매_조회_dto), true);
     }
 }

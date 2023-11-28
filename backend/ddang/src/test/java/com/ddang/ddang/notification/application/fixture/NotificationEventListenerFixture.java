@@ -4,15 +4,14 @@ import com.ddang.ddang.auction.domain.Auction;
 import com.ddang.ddang.auction.domain.BidUnit;
 import com.ddang.ddang.auction.domain.Price;
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
-import com.ddang.ddang.bid.application.dto.BidDto;
-import com.ddang.ddang.bid.application.dto.CreateBidDto;
+import com.ddang.ddang.bid.application.dto.request.CreateBidDto;
 import com.ddang.ddang.bid.application.event.BidNotificationEvent;
 import com.ddang.ddang.bid.domain.Bid;
 import com.ddang.ddang.bid.domain.BidPrice;
 import com.ddang.ddang.bid.domain.repository.BidRepository;
 import com.ddang.ddang.category.domain.Category;
 import com.ddang.ddang.category.infrastructure.persistence.JpaCategoryRepository;
-import com.ddang.ddang.chat.application.dto.CreateMessageDto;
+import com.ddang.ddang.chat.application.dto.request.CreateMessageDto;
 import com.ddang.ddang.chat.application.event.MessageNotificationEvent;
 import com.ddang.ddang.chat.domain.ChatRoom;
 import com.ddang.ddang.chat.domain.Message;
@@ -31,11 +30,10 @@ import com.ddang.ddang.region.domain.repository.RegionRepository;
 import com.ddang.ddang.user.domain.Reliability;
 import com.ddang.ddang.user.domain.User;
 import com.ddang.ddang.user.domain.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class NotificationEventListenerFixture {
@@ -152,13 +150,12 @@ public class NotificationEventListenerFixture {
                        .chatRoom(채팅방)
                        .writer(발신자_겸_판매자)
                        .receiver(수신자_겸_기존_입찰자)
-                       .contents("메시지 내용")
+                       .content("메시지 내용")
                        .build()
         );
-        final BidDto 입찰_DTO = new BidDto(수신자_겸_기존_입찰자.getId(), 경매, 이미지_절대_경로);
 
         메시지_알림_이벤트 = new MessageNotificationEvent(저장된_메시지, 이미지_절대_경로);
-        입찰_알림_이벤트 = new BidNotificationEvent(입찰_DTO);
+        입찰_알림_이벤트 = new BidNotificationEvent(수신자_겸_기존_입찰자.getId(), 경매, 이미지_절대_경로);
 
         final Question 질문 = new Question(경매, 질문자, "질문 내용");
         final Answer 답변 = new Answer(발신자_겸_판매자, "응답 내용");

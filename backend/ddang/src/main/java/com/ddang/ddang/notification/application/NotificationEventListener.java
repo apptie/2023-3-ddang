@@ -1,12 +1,11 @@
 package com.ddang.ddang.notification.application;
 
 import com.ddang.ddang.auction.domain.Auction;
-import com.ddang.ddang.bid.application.dto.BidDto;
 import com.ddang.ddang.bid.application.event.BidNotificationEvent;
 import com.ddang.ddang.chat.application.event.MessageNotificationEvent;
 import com.ddang.ddang.chat.domain.Message;
 import com.ddang.ddang.image.domain.ProfileImage;
-import com.ddang.ddang.notification.application.dto.CreateNotificationDto;
+import com.ddang.ddang.notification.application.dto.request.CreateNotificationDto;
 import com.ddang.ddang.notification.domain.NotificationType;
 import com.ddang.ddang.qna.application.event.AnswerNotificationEvent;
 import com.ddang.ddang.qna.application.event.QuestionNotificationEvent;
@@ -27,7 +26,6 @@ public class NotificationEventListener {
     private static final String MESSAGE_NOTIFICATION_REDIRECT_URI = "/chattings";
     private static final String AUCTION_DETAIL_URI = "/auctions";
     private static final String BID_NOTIFICATION_MESSAGE_FORMAT = "상위 입찰자가 나타났습니다. 구매를 원하신다면 더 높은 가격을 제시해 주세요.";
-    private static final int FIRST_IMAGE_INDEX = 0;
 
     private final NotificationService notificationService;
 
@@ -39,8 +37,8 @@ public class NotificationEventListener {
             final CreateNotificationDto createNotificationDto = new CreateNotificationDto(
                     NotificationType.MESSAGE,
                     message.getReceiver().getId(),
-                    message.getWriter().getName(),
-                    message.getContents(),
+                    message.getWriter().findName(),
+                    message.getContent(),
                     calculateRedirectUrl(MESSAGE_NOTIFICATION_REDIRECT_URI, message.getChatRoom().getId()),
                     messageNotificationEvent.profileImageAbsoluteUrl() + profileImage.getStoreName()
             );
@@ -53,15 +51,14 @@ public class NotificationEventListener {
     @TransactionalEventListener
     public void sendBidNotification(final BidNotificationEvent bidNotificationEvent) {
         try {
-            final BidDto bidDto = bidNotificationEvent.bidDto();
-            final Auction auction = bidDto.auction();
+            final Auction auction = bidNotificationEvent.auction();
             final CreateNotificationDto createNotificationDto = new CreateNotificationDto(
                     NotificationType.BID,
-                    bidDto.previousBidderId(),
+                    bidNotificationEvent.previousBidderId(),
                     auction.getTitle(),
                     BID_NOTIFICATION_MESSAGE_FORMAT,
                     calculateRedirectUrl(AUCTION_DETAIL_URI, auction.getId()),
-                    bidDto.auctionImageAbsoluteUrl() + auction.getThumbnailImageStoreName()
+                    bidNotificationEvent.auctionImageAbsoluteUrl() + auction.getThumbnailImageStoreName()
             );
             notificationService.send(createNotificationDto);
         } catch (final FirebaseMessagingException ex) {

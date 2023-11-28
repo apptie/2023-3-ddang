@@ -1,10 +1,10 @@
 package com.ddang.ddang.auction.presentation;
 
-import com.ddang.ddang.auction.presentation.dto.response.ReadReviewDetailResponse;
+import com.ddang.ddang.auction.presentation.dto.response.ReadReviewResponse;
 import com.ddang.ddang.authentication.configuration.AuthenticateUser;
 import com.ddang.ddang.authentication.domain.dto.AuthenticationUserInfo;
 import com.ddang.ddang.review.application.ReviewService;
-import com.ddang.ddang.review.application.dto.ReadReviewDetailDto;
+import com.ddang.ddang.review.application.dto.response.ReadSingleReviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +20,12 @@ public class AuctionReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/{auctionId}/reviews")
-    public ResponseEntity<ReadReviewDetailResponse> readByAuctionId(
+    public ResponseEntity<ReadReviewResponse> readByAuctionId(
             @AuthenticateUser final AuthenticationUserInfo userInfo,
             @PathVariable final Long auctionId
     ) {
-        final ReadReviewDetailDto readReviewDetailDto = reviewService.readByAuctionIdAndWriterId(userInfo.userId(), auctionId);
-        ReadReviewDetailResponse response = ReadReviewDetailResponse.from(readReviewDetailDto);
+        final ReadSingleReviewDto readSingleReviewDto = reviewService.readByAuctionIdAndWriterId(userInfo.userId(), auctionId);
+        ReadReviewResponse response = ReadReviewResponse.from(readSingleReviewDto);
 
         return ResponseEntity.ok(response);
     }

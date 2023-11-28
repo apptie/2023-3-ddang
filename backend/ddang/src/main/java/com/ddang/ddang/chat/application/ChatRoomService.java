@@ -1,21 +1,19 @@
 package com.ddang.ddang.chat.application;
 
-import com.ddang.ddang.auction.application.dto.ReadChatRoomDto;
 import com.ddang.ddang.auction.domain.Auction;
 import com.ddang.ddang.auction.domain.exception.WinnerNotFoundException;
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
 import com.ddang.ddang.authentication.domain.dto.AuthenticationUserInfo;
-import com.ddang.ddang.chat.application.dto.CreateChatRoomDto;
-import com.ddang.ddang.chat.application.dto.ReadChatRoomWithLastMessageDto;
-import com.ddang.ddang.chat.application.dto.ReadParticipatingChatRoomDto;
+import com.ddang.ddang.chat.application.dto.request.CreateChatRoomDto;
+import com.ddang.ddang.chat.application.dto.response.ReadChatRoomDto;
+import com.ddang.ddang.chat.application.dto.response.ReadMultipleChatRoomDto;
+import com.ddang.ddang.chat.application.dto.response.ReadSingleChatRoomDto;
 import com.ddang.ddang.chat.application.event.CreateReadMessageLogEvent;
 import com.ddang.ddang.chat.application.exception.InvalidAuctionToChatException;
-import com.ddang.ddang.chat.application.exception.InvalidUserToChat;
+import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException;
 import com.ddang.ddang.chat.domain.ChatRoom;
-import com.ddang.ddang.chat.domain.dto.ChatRoomAndImageDto;
-import com.ddang.ddang.chat.domain.dto.ChatRoomAndMessageAndImageDto;
-import com.ddang.ddang.chat.domain.repository.ChatRoomAndImageRepository;
-import com.ddang.ddang.chat.domain.repository.ChatRoomAndMessageAndImageRepository;
+import com.ddang.ddang.chat.domain.dto.MultipleChatRoomInfoDto;
+import com.ddang.ddang.chat.domain.repository.MultipleChatRoomRepository;
 import com.ddang.ddang.chat.domain.repository.ChatRoomRepository;
 import com.ddang.ddang.user.domain.User;
 import com.ddang.ddang.user.domain.repository.UserRepository;
@@ -35,8 +33,7 @@ public class ChatRoomService {
 
     private final ApplicationEventPublisher messageLogEventPublisher;
     private final ChatRoomRepository chatRoomRepository;
-    private final ChatRoomAndImageRepository chatRoomAndImageRepository;
-    private final ChatRoomAndMessageAndImageRepository chatRoomAndMessageAndImageRepository;
+    private final MultipleChatRoomRepository multipleChatRoomRepository;
     private final UserRepository userRepository;
     private final AuctionRepository auctionRepository;
 
@@ -78,7 +75,7 @@ public class ChatRoomService {
 
     private void checkUserCanParticipate(final User findUser, final Auction findAuction) {
         if (isNotSellerAndNotWinner(findUser, findAuction)) {
-            throw new InvalidUserToChat("경매의 판매자 또는 최종 낙찰자만 채팅이 가능합니다.");
+            throw new ForbiddenChattingUserException("경매의 판매자 또는 최종 낙찰자만 채팅이 가능합니다.");
         }
     }
 
@@ -86,28 +83,28 @@ public class ChatRoomService {
         return !(findAuction.isOwner(findUser) || findAuction.isWinner(findUser, LocalDateTime.now()));
     }
 
-    public List<ReadChatRoomWithLastMessageDto> readAllByUserId(final Long userId) {
+    public List<ReadMultipleChatRoomDto> readAllByUserId(final Long userId) {
         final User findUser = userRepository.getByIdOrThrow(userId);
-        final List<ChatRoomAndMessageAndImageDto> chatRoomAndMessageAndImageQueryProjectionDtos =
-                chatRoomAndMessageAndImageRepository.findAllChatRoomInfoByUserIdOrderByLastMessage(findUser.getId());
+        final List<MultipleChatRoomInfoDto> chatRoomAndMessageAndImageQueryProjectionDtos =
+                multipleChatRoomRepository.findAllByUserIdOrderByLastMessage(findUser.getId());
 
         return chatRoomAndMessageAndImageQueryProjectionDtos.stream()
-                                                            .map(dto -> ReadChatRoomWithLastMessageDto.of(findUser, dto))
+                                                            .map(dto -> ReadMultipleChatRoomDto.of(findUser, dto))
                                                             .toList();
     }
 
-    public ReadParticipatingChatRoomDto readByChatRoomId(final Long chatRoomId, final Long userId) {
+    public ReadSingleChatRoomDto readByChatRoomId(final Long chatRoomId, final Long userId) {
         final User findUser = userRepository.getByIdOrThrow(userId);
-        final ChatRoomAndImageDto chatRoomAndImageDto = chatRoomAndImageRepository.getByIdOrThrow(chatRoomId);
+        final ChatRoom chatRoom = chatRoomRepository.getDetailChatRoomByIdOrThrow(chatRoomId);
 
-        checkAccessible(findUser, chatRoomAndImageDto.chatRoom());
+        checkAccessible(findUser, chatRoom);
 
-        return ReadParticipatingChatRoomDto.of(findUser, chatRoomAndImageDto);
+        return ReadSingleChatRoomDto.of(findUser, chatRoom);
     }
 
     private void checkAccessible(final User findUser, final ChatRoom chatRoom) {
         if (!chatRoom.isParticipant(findUser)) {
-            throw new InvalidUserToChat("해당 채팅방에 접근할 권한이 없습니다.");
+            throw new ForbiddenChattingUserException("해당 채팅방에 접근할 권한이 없습니다.");
         }
     }
 

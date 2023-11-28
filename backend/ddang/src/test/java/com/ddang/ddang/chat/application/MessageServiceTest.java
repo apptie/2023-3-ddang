@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 
-import com.ddang.ddang.chat.application.dto.ReadMessageDto;
+import com.ddang.ddang.chat.application.dto.response.ReadMessageDto;
 import com.ddang.ddang.chat.application.event.MessageNotificationEvent;
 import com.ddang.ddang.chat.application.event.UpdateReadMessageLogEvent;
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
@@ -17,7 +17,7 @@ import com.ddang.ddang.chat.domain.repository.ReadMessageLogRepository;
 import com.ddang.ddang.chat.infrastructure.exception.ChatRoomNotFoundException;
 import com.ddang.ddang.configuration.IsolateDatabase;
 import com.ddang.ddang.notification.application.NotificationService;
-import com.ddang.ddang.notification.application.dto.CreateNotificationDto;
+import com.ddang.ddang.notification.application.dto.request.CreateNotificationDto;
 import com.ddang.ddang.notification.domain.NotificationStatus;
 import com.ddang.ddang.user.infrastructure.exception.UserNotFoundException;
 import com.google.firebase.messaging.FirebaseMessagingException;

@@ -8,7 +8,9 @@ public interface ChatRoomRepository {
 
     ChatRoom save(final ChatRoom chatRoom);
 
-    ChatRoom getByIdOrThrow(final Long id);
+    ChatRoom getSimpleChatRoomByIdOrThrow(final Long id);
+
+    ChatRoom getDetailChatRoomByIdOrThrow(final Long id);
 
     Optional<Long> findChatRoomIdByAuctionId(final Long auctionId);
 

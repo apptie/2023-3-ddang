@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.ddang.ddang.auction.application.dto.CreateAuctionDto;
+import com.ddang.ddang.auction.application.dto.request.CreateAuctionDto;
 import com.ddang.ddang.auction.configuration.DescendingSortPageableArgumentResolver;
 import com.ddang.ddang.auction.infrastructure.persistence.exception.AuctionNotFoundException;
 import com.ddang.ddang.auction.presentation.dto.request.ReadAuctionSearchCondition;
@@ -36,7 +36,7 @@ import com.ddang.ddang.authentication.configuration.AuthenticationInterceptor;
 import com.ddang.ddang.authentication.configuration.AuthenticationPrincipalArgumentResolver;
 import com.ddang.ddang.authentication.domain.TokenDecoder;
 import com.ddang.ddang.authentication.domain.TokenType;
-import com.ddang.ddang.authentication.domain.dto.AuthenticationStore;
+import com.ddang.ddang.authentication.configuration.AuthenticationStore;
 import com.ddang.ddang.category.infrastructure.exception.CategoryNotFoundException;
 import com.ddang.ddang.exception.GlobalExceptionHandler;
 import com.ddang.ddang.image.infrastructure.local.exception.EmptyImageException;
@@ -85,6 +85,7 @@ class AuctionControllerTest extends AuctionControllerFixture {
                                  .setControllerAdvice(new GlobalExceptionHandler())
                                  .addInterceptors(interceptor)
                                  .setCustomArgumentResolvers(resolver, new DescendingSortPageableArgumentResolver())
+                                 .setMessageConverters(mappingJackson2HttpMessageConverter)
                                  .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                                  .alwaysDo(print())
                                  .alwaysDo(restDocs)

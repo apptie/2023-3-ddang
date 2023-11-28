@@ -6,12 +6,13 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
-import com.ddang.ddang.authentication.application.dto.LoginInformationDto;
-import com.ddang.ddang.authentication.application.dto.TokenDto;
+import com.ddang.ddang.authentication.application.dto.response.LoginInfoDto;
+import com.ddang.ddang.authentication.application.dto.response.TokenDto;
 import com.ddang.ddang.authentication.application.exception.InvalidWithdrawalException;
 import com.ddang.ddang.authentication.application.exception.WithdrawalNotAllowedException;
 import com.ddang.ddang.authentication.application.fixture.AuthenticationServiceFixture;
 import com.ddang.ddang.authentication.domain.Oauth2UserInformationProviderComposite;
+import com.ddang.ddang.authentication.domain.RandomUuidUserNameGenerator;
 import com.ddang.ddang.authentication.domain.TokenDecoder;
 import com.ddang.ddang.authentication.domain.TokenEncoder;
 import com.ddang.ddang.authentication.domain.exception.InvalidTokenException;
@@ -72,7 +73,8 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
                 tokenEncoder,
                 tokenDecoder,
                 blackListTokenService,
-                deviceTokenRepository
+                deviceTokenRepository,
+                new RandomUuidUserNameGenerator()
         );
     }
 
@@ -83,7 +85,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         given(userInfoProvider.findUserInformation(anyString())).willReturn(가입하지_않은_사용자_회원_정보);
 
         // when
-        final LoginInformationDto actual = authenticationService.login(
+        final LoginInfoDto actual = authenticationService.login(
                 가입하지_않은_사용자_회원_정보.findUserId(),
                 지원하는_소셜_로그인_타입,
                 디바이스_토큰
@@ -91,8 +93,8 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
 
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual.tokenDto().accessToken()).isNotEmpty().contains("Bearer ");
-            softAssertions.assertThat(actual.tokenDto().refreshToken()).isNotEmpty().contains("Bearer ");
+            softAssertions.assertThat(actual.accessToken()).isNotEmpty().contains("Bearer ");
+            softAssertions.assertThat(actual.refreshToken()).isNotEmpty().contains("Bearer ");
         });
     }
 
@@ -103,7 +105,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         given(userInfoProvider.findUserInformation(anyString())).willReturn(가입한_사용자_회원_정보);
 
         // when
-        final LoginInformationDto actual = authenticationService.login(
+        final LoginInfoDto actual = authenticationService.login(
                 가입한_사용자_회원_정보.findUserId(),
                 지원하는_소셜_로그인_타입,
                 디바이스_토큰
@@ -111,8 +113,8 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
 
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual.tokenDto().accessToken()).isNotEmpty().contains("Bearer ");
-            softAssertions.assertThat(actual.tokenDto().refreshToken()).isNotEmpty().contains("Bearer ");
+            softAssertions.assertThat(actual.accessToken()).isNotEmpty().contains("Bearer ");
+            softAssertions.assertThat(actual.refreshToken()).isNotEmpty().contains("Bearer ");
             softAssertions.assertThat(actual.isSignUpUser()).isFalse();
         });
     }
@@ -124,7 +126,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         given(userInfoProvider.findUserInformation(anyString())).willReturn(가입하지_않은_사용자_회원_정보);
 
         // when
-        final LoginInformationDto actual = authenticationService.login(
+        final LoginInfoDto actual = authenticationService.login(
                 가입하지_않은_사용자_회원_정보.findUserId(),
                 지원하는_소셜_로그인_타입,
                 디바이스_토큰
@@ -132,8 +134,8 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
 
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual.tokenDto().accessToken()).isNotEmpty();
-            softAssertions.assertThat(actual.tokenDto().refreshToken()).isNotEmpty();
+            softAssertions.assertThat(actual.accessToken()).isNotEmpty();
+            softAssertions.assertThat(actual.refreshToken()).isNotEmpty();
             softAssertions.assertThat(actual.isSignUpUser()).isTrue();
         });
     }
@@ -196,7 +198,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
             softAssertions.assertThat(사용자.isDeleted()).isTrue();
-            softAssertions.assertThat(사용자.getName()).isNotEqualTo(사용자_이름);
+            softAssertions.assertThat(사용자.findName()).isNotEqualTo(사용자_이름);
             softAssertions.assertThat(사용자.getProfileImage()).isNull();
         });
     }

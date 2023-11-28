@@ -24,9 +24,9 @@ import com.ddang.ddang.authentication.configuration.AuthenticationInterceptor;
 import com.ddang.ddang.authentication.configuration.AuthenticationPrincipalArgumentResolver;
 import com.ddang.ddang.authentication.domain.TokenDecoder;
 import com.ddang.ddang.authentication.domain.TokenType;
-import com.ddang.ddang.authentication.domain.dto.AuthenticationStore;
+import com.ddang.ddang.authentication.configuration.AuthenticationStore;
 import com.ddang.ddang.exception.GlobalExceptionHandler;
-import com.ddang.ddang.review.application.dto.CreateReviewDto;
+import com.ddang.ddang.review.application.dto.request.CreateReviewDto;
 import com.ddang.ddang.review.application.exception.AlreadyReviewException;
 import com.ddang.ddang.review.infrastructure.exception.ReviewNotFoundException;
 import com.ddang.ddang.review.presentation.fixture.ReviewControllerFixture;
@@ -70,6 +70,7 @@ class ReviewControllerTest extends ReviewControllerFixture {
                                  .setControllerAdvice(new GlobalExceptionHandler())
                                  .addInterceptors(interceptor)
                                  .setCustomArgumentResolvers(resolver)
+                                 .setMessageConverters(mappingJackson2HttpMessageConverter)
                                  .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                                  .alwaysDo(print())
                                  .alwaysDo(restDocs)
@@ -121,19 +122,20 @@ class ReviewControllerTest extends ReviewControllerFixture {
 
         // when & then
         final ResultActions resultActions =
-                mockMvc.perform(RestDocumentationRequestBuilders.get("/reviews/users/{userId}", String.valueOf(구매자.id()))
-                                                                .contentType(MediaType.APPLICATION_JSON)
+                mockMvc.perform(
+                               RestDocumentationRequestBuilders.get("/reviews/users/{userId}", String.valueOf(구매자.id()))
+                                                               .contentType(MediaType.APPLICATION_JSON)
                        )
                        .andExpectAll(
                                status().isOk(),
                                jsonPath("$.[0].id", is(구매자가_판매자2에게_받은_평가.id()), Long.class),
-                               jsonPath("$.[0].writer.id", is(구매자가_판매자2에게_받은_평가.writer().id()), Long.class),
-                               jsonPath("$.[0].writer.name", is(구매자가_판매자2에게_받은_평가.writer().name())),
+                               jsonPath("$.[0].reviewer.id", is(구매자가_판매자2에게_받은_평가.reviewer().id()), Long.class),
+                               jsonPath("$.[0].reviewer.name", is(구매자가_판매자2에게_받은_평가.reviewer().name())),
                                jsonPath("$.[0].content", is(구매자가_판매자2에게_받은_평가.content())),
                                jsonPath("$.[0].score", is(구매자가_판매자2에게_받은_평가.score())),
                                jsonPath("$.[1].id", is(구매자가_판매자1에게_받은_평가.id()), Long.class),
-                               jsonPath("$.[1].writer.id", is(구매자가_판매자1에게_받은_평가.writer().id()), Long.class),
-                               jsonPath("$.[1].writer.name", is(구매자가_판매자1에게_받은_평가.writer().name())),
+                               jsonPath("$.[1].reviewer.id", is(구매자가_판매자1에게_받은_평가.reviewer().id()), Long.class),
+                               jsonPath("$.[1].reviewer.name", is(구매자가_판매자1에게_받은_평가.reviewer().name())),
                                jsonPath("$.[1].content", is(구매자가_판매자1에게_받은_평가.content())),
                                jsonPath("$.[1].score", is(구매자가_판매자1에게_받은_평가.score()))
                        );
@@ -206,12 +208,12 @@ class ReviewControllerTest extends ReviewControllerFixture {
                                                    .description("조회 대상 사용자가 받은 모든 평가 목록"),
                                 fieldWithPath("[].id").type(JsonFieldType.NUMBER)
                                                       .description("사용자 평가 ID"),
-                                fieldWithPath("[].writer.id").type(JsonFieldType.NUMBER)
-                                                             .description("평가를 작성한 사용자의 ID"),
-                                fieldWithPath("[].writer.name").type(JsonFieldType.STRING)
-                                                               .description("평가를 작성한 사용자의 이름"),
-                                fieldWithPath("[].writer.profileImage").type(JsonFieldType.STRING)
-                                                                       .description("평가를 작성한 사용자의 프로필 이미지 url"),
+                                fieldWithPath("[].reviewer.id").type(JsonFieldType.NUMBER)
+                                                               .description("평가를 작성한 사용자의 ID"),
+                                fieldWithPath("[].reviewer.name").type(JsonFieldType.STRING)
+                                                                 .description("평가를 작성한 사용자의 이름"),
+                                fieldWithPath("[].reviewer.profileImage").type(JsonFieldType.STRING)
+                                                                         .description("평가를 작성한 사용자의 프로필 이미지 url"),
                                 fieldWithPath("[].content").type(JsonFieldType.STRING)
                                                            .description("평가 내용"),
                                 fieldWithPath("[].score").type(JsonFieldType.NUMBER)

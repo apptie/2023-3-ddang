@@ -3,9 +3,8 @@ package com.ddang.ddang.bid.application;
 import com.ddang.ddang.auction.domain.Auction;
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
 import com.ddang.ddang.auction.infrastructure.persistence.exception.AuctionNotFoundException;
-import com.ddang.ddang.bid.application.dto.BidDto;
-import com.ddang.ddang.bid.application.dto.CreateBidDto;
-import com.ddang.ddang.bid.application.dto.ReadBidDto;
+import com.ddang.ddang.bid.application.dto.request.CreateBidDto;
+import com.ddang.ddang.bid.application.dto.response.ReadBidDto;
 import com.ddang.ddang.bid.application.event.BidNotificationEvent;
 import com.ddang.ddang.bid.application.exception.InvalidAuctionToBidException;
 import com.ddang.ddang.bid.application.exception.InvalidBidPriceException;
@@ -52,9 +51,13 @@ public class BidService {
             final Auction auction,
             final User previousBidder
     ) {
-        final BidDto bidDto = new BidDto(previousBidder.getId(), auction, auctionImageAbsoluteUrl);
+        final BidNotificationEvent notificationEvent = new BidNotificationEvent(
+                previousBidder.getId(),
+                auction,
+                auctionImageAbsoluteUrl
+        );
 
-        bidEventPublisher.publishEvent(new BidNotificationEvent(bidDto));
+        bidEventPublisher.publishEvent(notificationEvent);
     }
 
     private void checkInvalidAuction(final Auction auction) {

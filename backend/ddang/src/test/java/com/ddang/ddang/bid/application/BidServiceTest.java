@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.ddang.ddang.auction.infrastructure.persistence.exception.AuctionNotFoundException;
-import com.ddang.ddang.bid.application.dto.CreateBidDto;
-import com.ddang.ddang.bid.application.dto.ReadBidDto;
+import com.ddang.ddang.bid.application.dto.request.CreateBidDto;
+import com.ddang.ddang.bid.application.dto.response.ReadBidDto;
 import com.ddang.ddang.bid.application.event.BidNotificationEvent;
 import com.ddang.ddang.bid.application.exception.InvalidAuctionToBidException;
 import com.ddang.ddang.bid.application.exception.InvalidBidPriceException;
@@ -15,7 +15,7 @@ import com.ddang.ddang.bid.application.exception.InvalidBidderException;
 import com.ddang.ddang.bid.application.fixture.BidServiceFixture;
 import com.ddang.ddang.configuration.IsolateDatabase;
 import com.ddang.ddang.notification.application.NotificationService;
-import com.ddang.ddang.notification.application.dto.CreateNotificationDto;
+import com.ddang.ddang.notification.application.dto.request.CreateNotificationDto;
 import com.ddang.ddang.user.infrastructure.exception.UserNotFoundException;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import java.util.List;
@@ -177,8 +177,8 @@ class BidServiceTest extends BidServiceFixture {
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual).hasSize(2);
-            softAssertions.assertThat(actual.get(0).name()).isEqualTo(입찰자1.getName());
-            softAssertions.assertThat(actual.get(1).name()).isEqualTo(입찰자2.getName());
+            softAssertions.assertThat(actual.get(0).name()).isEqualTo(입찰자1.findName());
+            softAssertions.assertThat(actual.get(1).name()).isEqualTo(입찰자2.findName());
         });
     }
 

@@ -1,22 +1,22 @@
 package com.ddang.ddang.authentication.application;
 
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
-import com.ddang.ddang.authentication.application.dto.LoginInformationDto;
-import com.ddang.ddang.authentication.application.dto.LoginUserInformationDto;
-import com.ddang.ddang.authentication.application.dto.TokenDto;
+import com.ddang.ddang.authentication.application.dto.response.LoginInfoDto;
+import com.ddang.ddang.authentication.application.dto.response.LoginUserInfoDto;
+import com.ddang.ddang.authentication.application.dto.response.TokenDto;
 import com.ddang.ddang.authentication.application.exception.InvalidWithdrawalException;
 import com.ddang.ddang.authentication.application.exception.WithdrawalNotAllowedException;
-import com.ddang.ddang.authentication.application.util.RandomNameGenerator;
 import com.ddang.ddang.authentication.domain.Oauth2UserInformationProviderComposite;
 import com.ddang.ddang.authentication.domain.TokenDecoder;
 import com.ddang.ddang.authentication.domain.TokenEncoder;
 import com.ddang.ddang.authentication.domain.TokenType;
+import com.ddang.ddang.authentication.domain.UserNameGenerator;
 import com.ddang.ddang.authentication.domain.exception.InvalidTokenException;
 import com.ddang.ddang.authentication.infrastructure.jwt.PrivateClaims;
 import com.ddang.ddang.authentication.infrastructure.oauth2.OAuth2UserInformationProvider;
 import com.ddang.ddang.authentication.infrastructure.oauth2.Oauth2Type;
 import com.ddang.ddang.device.application.DeviceTokenService;
-import com.ddang.ddang.device.application.dto.PersistDeviceTokenDto;
+import com.ddang.ddang.device.application.dto.request.CreateDeviceTokenDto;
 import com.ddang.ddang.device.domain.repository.DeviceTokenRepository;
 import com.ddang.ddang.user.domain.Reliability;
 import com.ddang.ddang.user.domain.User;
@@ -43,21 +43,22 @@ public class AuthenticationService {
     private final TokenDecoder tokenDecoder;
     private final BlackListTokenService blackListTokenService;
     private final DeviceTokenRepository deviceTokenRepository;
+    private final UserNameGenerator generator;
 
     @Transactional
-    public LoginInformationDto login(
+    public LoginInfoDto login(
             final String socialId,
             final Oauth2Type oauth2Type,
             final String deviceToken
     ) {
-        final LoginUserInformationDto loginUserInfo = findOrPersistUser(socialId, oauth2Type);
+        final LoginUserInfoDto loginUserInfo = findOrPersistUser(socialId, oauth2Type);
 
         updateOrPersistDeviceToken(deviceToken, loginUserInfo.user());
 
-        return LoginInformationDto.of(convertTokenDto(loginUserInfo), loginUserInfo);
+        return LoginInfoDto.of(convertTokenDto(loginUserInfo), loginUserInfo);
     }
 
-    private LoginUserInformationDto findOrPersistUser(final String socialId, final Oauth2Type oauth2Type) {
+    private LoginUserInfoDto findOrPersistUser(final String socialId, final Oauth2Type oauth2Type) {
         final AtomicBoolean isSignUpUser = new AtomicBoolean(false);
         final User signInUser = userRepository.findByOauthId(socialId)
                                               .orElseGet(() -> {
@@ -65,12 +66,12 @@ public class AuthenticationService {
                                                   return persistUser(socialId, oauth2Type);
                                               });
 
-        return new LoginUserInformationDto(signInUser, isSignUpUser.get());
+        return new LoginUserInfoDto(signInUser, isSignUpUser.get());
     }
 
     private User persistUser(final String socialId, final Oauth2Type oauth2Type) {
         final User user = User.builder()
-                              .name(oauth2Type.calculateNickname(calculateRandomNumber()))
+                              .name(oauth2Type.calculateNickname(generator.generate()))
                               .reliability(Reliability.INITIAL_RELIABILITY)
                               .oauthId(socialId)
                               .oauth2Type(oauth2Type)
@@ -80,26 +81,12 @@ public class AuthenticationService {
     }
 
     private void updateOrPersistDeviceToken(final String deviceToken, final User persistUser) {
-        final PersistDeviceTokenDto persistDeviceTokenDto = new PersistDeviceTokenDto(deviceToken);
+        final CreateDeviceTokenDto createDeviceTokenDto = new CreateDeviceTokenDto(deviceToken);
 
-        deviceTokenService.persist(persistUser.getId(), persistDeviceTokenDto);
+        deviceTokenService.persist(persistUser.getId(), createDeviceTokenDto);
     }
 
-    private String calculateRandomNumber() {
-        String name = RandomNameGenerator.generate();
-
-        while (isAlreadyExist(name)) {
-            name = RandomNameGenerator.generate();
-        }
-
-        return name;
-    }
-
-    private boolean isAlreadyExist(final String name) {
-        return userRepository.existsByNameEndingWith(name);
-    }
-
-    private TokenDto convertTokenDto(final LoginUserInformationDto signInUserInfo) {
+    private TokenDto convertTokenDto(final LoginUserInfoDto signInUserInfo) {
         final User loginUser = signInUserInfo.user();
 
         final String accessToken = tokenEncoder.encode(
