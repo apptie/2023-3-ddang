@@ -1,7 +1,7 @@
 package com.ddang.ddang.chat.application;
 
 import com.ddang.ddang.chat.application.dto.request.CreateMessageDto;
-import com.ddang.ddang.chat.application.dto.response.ReadMessageDto;
+import com.ddang.ddang.chat.application.dto.response.ReadMultipleMessageDto;
 import com.ddang.ddang.chat.application.event.MessageNotificationEvent;
 import com.ddang.ddang.chat.application.event.UpdateReadMessageLogEvent;
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
@@ -12,7 +12,7 @@ import com.ddang.ddang.chat.domain.ChatRoom;
 import com.ddang.ddang.chat.domain.Message;
 import com.ddang.ddang.chat.domain.repository.ChatRoomRepository;
 import com.ddang.ddang.chat.domain.repository.MessageRepository;
-import com.ddang.ddang.chat.presentation.dto.request.ReadMessageRequest;
+import com.ddang.ddang.chat.application.dto.request.ReadMessageDto;
 import com.ddang.ddang.user.domain.User;
 import com.ddang.ddang.user.domain.repository.UserRepository;
 import java.util.List;
@@ -54,7 +54,7 @@ public class MessageService {
         return persistMessage.getId();
     }
 
-    public List<ReadMessageDto> readAllByLastMessageId(final ReadMessageRequest request) {
+    public List<ReadMultipleMessageDto> readAllByLastMessageId(final ReadMessageDto request) {
         final User reader = userRepository.getByIdOrThrow(request.messageReaderId());
         final ChatRoom chatRoom = chatRoomRepository.getSimpleChatRoomByIdOrThrow(request.chatRoomId());
 
@@ -75,7 +75,7 @@ public class MessageService {
         }
 
         return readMessages.stream()
-                           .map(message -> ReadMessageDto.from(message, chatRoom))
+                           .map(message -> ReadMultipleMessageDto.from(message, chatRoom))
                            .toList();
     }
 

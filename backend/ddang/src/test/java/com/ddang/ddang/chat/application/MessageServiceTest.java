@@ -6,7 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 
-import com.ddang.ddang.chat.application.dto.response.ReadMessageDto;
+import com.ddang.ddang.chat.application.dto.response.ReadMultipleMessageDto;
 import com.ddang.ddang.chat.application.event.MessageNotificationEvent;
 import com.ddang.ddang.chat.application.event.UpdateReadMessageLogEvent;
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
@@ -112,7 +112,7 @@ class MessageServiceTest extends MessageServiceFixture {
         willDoNothing().given(lastReadMessageLogService).update(any());
 
         // when
-        final List<ReadMessageDto> actual = messageService.readAllByLastMessageId(마지막_조회_메시지_아이디가_없는_메시지_조회용_request);
+        final List<ReadMultipleMessageDto> actual = messageService.readAllByLastMessageId(마지막_조회_메시지_아이디가_없는_메시지_조회용_request);
 
         // then
         assertThat(actual).hasSize(메시지_총_개수);
@@ -124,7 +124,7 @@ class MessageServiceTest extends MessageServiceFixture {
         willDoNothing().given(lastReadMessageLogService).update(any());
 
         // when
-        final List<ReadMessageDto> actual = messageService.readAllByLastMessageId(두_번째_메시지부터_모든_메시지_조회용_request);
+        final List<ReadMultipleMessageDto> actual = messageService.readAllByLastMessageId(두_번째_메시지부터_모든_메시지_조회용_request);
 
         // then
         assertThat(actual).hasSize(메시지_총_개수 - 1);
@@ -133,10 +133,10 @@ class MessageServiceTest extends MessageServiceFixture {
     @Test
     void 마지막으로_조회된_메시지_이후에_추가된_메시지가_없는_경우_빈_리스트를_반환한다() {
         // when
-        final List<ReadMessageDto> readMessageDtos = messageService.readAllByLastMessageId(조회할_메시지가_더이상_없는_메시지_조회용_request);
+        final List<ReadMultipleMessageDto> readMultipleMessageDtos = messageService.readAllByLastMessageId(조회할_메시지가_더이상_없는_메시지_조회용_request);
 
         // then
-        assertThat(readMessageDtos).isEmpty();
+        assertThat(readMultipleMessageDtos).isEmpty();
     }
 
     @Test

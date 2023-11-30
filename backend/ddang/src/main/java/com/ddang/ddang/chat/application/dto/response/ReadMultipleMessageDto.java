@@ -5,7 +5,7 @@ import com.ddang.ddang.chat.domain.Message;
 
 import java.time.LocalDateTime;
 
-public record ReadMessageDto(
+public record ReadMultipleMessageDto(
         Long id,
         LocalDateTime createdTime,
         Long chatRoomId,
@@ -14,11 +14,11 @@ public record ReadMessageDto(
         String content
 ) {
 
-    public static ReadMessageDto from(
+    public static ReadMultipleMessageDto from(
             final Message message,
             final ChatRoom chatRoom
     ) {
-        return new ReadMessageDto(
+        return new ReadMultipleMessageDto(
                 message.getId(),
                 message.getCreatedTime(),
                 chatRoom.getId(),

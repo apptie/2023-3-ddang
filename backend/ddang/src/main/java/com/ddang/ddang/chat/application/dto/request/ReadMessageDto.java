@@ -1,10 +1,10 @@
-package com.ddang.ddang.chat.presentation.dto.request;
+package com.ddang.ddang.chat.application.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import javax.annotation.Nullable;
 
-public record ReadMessageRequest(
+public record ReadMessageDto(
         @Nullable
         Long messageReaderId,
 

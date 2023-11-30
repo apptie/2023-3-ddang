@@ -7,11 +7,11 @@ import com.ddang.ddang.chat.application.MessageService;
 import com.ddang.ddang.chat.application.dto.request.CreateChatRoomDto;
 import com.ddang.ddang.chat.application.dto.request.CreateMessageDto;
 import com.ddang.ddang.chat.application.dto.response.ReadMultipleChatRoomDto;
-import com.ddang.ddang.chat.application.dto.response.ReadMessageDto;
+import com.ddang.ddang.chat.application.dto.response.ReadMultipleMessageDto;
 import com.ddang.ddang.chat.application.dto.response.ReadSingleChatRoomDto;
 import com.ddang.ddang.chat.presentation.dto.request.CreateChatRoomRequest;
 import com.ddang.ddang.chat.presentation.dto.request.CreateMessageRequest;
-import com.ddang.ddang.chat.presentation.dto.request.ReadMessageRequest;
+import com.ddang.ddang.chat.application.dto.request.ReadMessageDto;
 import com.ddang.ddang.chat.presentation.dto.response.CreateChatRoomResponse;
 import com.ddang.ddang.chat.presentation.dto.response.CreateMessageResponse;
 import com.ddang.ddang.chat.presentation.dto.response.ReadSingleChatRoomResponse;
@@ -112,26 +112,27 @@ public class ChatRoomController {
             @PathVariable final Long chatRoomId,
             @RequestParam(required = false) final Long lastMessageId
     ) {
-        final ReadMessageRequest readMessageRequest = new ReadMessageRequest(
+        final ReadMessageDto readMessageDto = new ReadMessageDto(
                 userInfo.userId(),
                 chatRoomId,
                 lastMessageId
         );
-        final List<ReadMessageDto> readMessageDtos = messageService.readAllByLastMessageId(readMessageRequest);
-        final List<ReadMessageResponse> responses = readMessageDtos.stream()
-                                                                   .map(readMessageDto -> ReadMessageResponse.of(
-                                                                           readMessageDto,
+        final List<ReadMultipleMessageDto> readMultipleMessageDtos = messageService.readAllByLastMessageId(
+                readMessageDto);
+        final List<ReadMessageResponse> responses = readMultipleMessageDtos.stream()
+                                                                           .map(dto -> ReadMessageResponse.of(
+                                                                           dto,
                                                                            isMessageOwner(
-                                                                                   readMessageDto,
+                                                                                   dto,
                                                                                    userInfo
                                                                            )
                                                                    ))
-                                                                   .toList();
+                                                                           .toList();
         return ResponseEntity.ok(responses);
     }
 
-    private boolean isMessageOwner(final ReadMessageDto readMessageDto, final AuthenticationUserInfo userInfo) {
-        return readMessageDto.writerId()
-                             .equals(userInfo.userId());
+    private boolean isMessageOwner(final ReadMultipleMessageDto readMultipleMessageDto, final AuthenticationUserInfo userInfo) {
+        return readMultipleMessageDto.writerId()
+                                     .equals(userInfo.userId());
     }
 }

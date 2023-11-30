@@ -37,7 +37,7 @@ import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
 import com.ddang.ddang.chat.application.exception.UnableToChatException;
 import com.ddang.ddang.chat.infrastructure.exception.ChatRoomNotFoundException;
-import com.ddang.ddang.chat.presentation.dto.request.ReadMessageRequest;
+import com.ddang.ddang.chat.application.dto.request.ReadMessageDto;
 import com.ddang.ddang.chat.presentation.dto.response.ReadMessageResponse;
 import com.ddang.ddang.chat.presentation.fixture.ChatRoomControllerFixture;
 import com.ddang.ddang.exception.GlobalExceptionHandler;
@@ -168,7 +168,7 @@ class ChatRoomControllerTest extends ChatRoomControllerFixture {
     void 마지막_조회_메시지_이후_메시지를_조회한다() throws Exception {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
-        given(messageService.readAllByLastMessageId(any(ReadMessageRequest.class))).willReturn(List.of(조회용_메시지));
+        given(messageService.readAllByLastMessageId(any(ReadMessageDto.class))).willReturn(List.of(조회용_메시지));
 
         final ReadMessageResponse expected = ReadMessageResponse.of(조회용_메시지, true);
 
@@ -191,7 +191,7 @@ class ChatRoomControllerTest extends ChatRoomControllerFixture {
     void 마지막_메시지_아이디가_없는_경우_빈_리스트를_반환한다() throws Exception {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
-        given(messageService.readAllByLastMessageId(any(ReadMessageRequest.class))).willReturn(Collections.emptyList());
+        given(messageService.readAllByLastMessageId(any(ReadMessageDto.class))).willReturn(Collections.emptyList());
 
         // when & then
         mockMvc.perform(get("/chattings/{chatRoomId}/messages", 채팅방_아이디)
@@ -208,7 +208,7 @@ class ChatRoomControllerTest extends ChatRoomControllerFixture {
     void 채팅방_아이디가_잘못된_경우_메시지를_조회하면_404를_반환한다() throws Exception {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
-        given(messageService.readAllByLastMessageId(any(ReadMessageRequest.class))).willThrow(
+        given(messageService.readAllByLastMessageId(any(ReadMessageDto.class))).willThrow(
                 new ChatRoomNotFoundException("지정한 아이디에 대한 채팅방을 찾을 수 없습니다."));
 
         // when & then
@@ -226,7 +226,7 @@ class ChatRoomControllerTest extends ChatRoomControllerFixture {
     void 마지막_메시지_아이디가_잘못된_경우_메시지를_조회하면_404를_반환한다() throws Exception {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
-        given(messageService.readAllByLastMessageId(any(ReadMessageRequest.class))).willThrow(
+        given(messageService.readAllByLastMessageId(any(ReadMessageDto.class))).willThrow(
                 new MessageNotFoundException("조회한 마지막 메시지가 존재하지 않습니다."));
 
         // when & then

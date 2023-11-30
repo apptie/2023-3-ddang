@@ -2,7 +2,7 @@ package com.ddang.ddang.chat.presentation.fixture;
 
 import com.ddang.ddang.authentication.infrastructure.jwt.PrivateClaims;
 import com.ddang.ddang.chat.application.dto.response.ReadMultipleChatRoomDto;
-import com.ddang.ddang.chat.application.dto.response.ReadMessageDto;
+import com.ddang.ddang.chat.application.dto.response.ReadMultipleMessageDto;
 import com.ddang.ddang.chat.application.dto.response.ReadMultipleChatRoomDto.SimpleAuctionInfoDto;
 import com.ddang.ddang.chat.application.dto.response.ReadMultipleChatRoomDto.MessageInfoDto;
 import com.ddang.ddang.chat.application.dto.response.ReadSingleChatRoomDto;
@@ -39,7 +39,7 @@ public class ChatRoomControllerFixture extends CommonControllerSliceTest {
     protected CreateMessageRequest 메시지_생성_요청 = new CreateMessageRequest(1L, "메시지 내용");
     protected CreateMessageRequest 유효하지_않은_발신자의_메시지_생성_요청 = new CreateMessageRequest(-999L, "메시지 내용");
     protected CreateMessageRequest 탈퇴한_사용자와의_메시지_생성_요청 = new CreateMessageRequest(탈퇴한_사용자_아이디, "메시지 내용");
-    protected ReadMessageDto 조회용_메시지 = new ReadMessageDto(1L, LocalDateTime.now(), 1L, 1L, 1L, "메시지내용");
+    protected ReadMultipleMessageDto 조회용_메시지 = new ReadMultipleMessageDto(1L, LocalDateTime.now(), 1L, 1L, 1L, "메시지내용");
     protected ReadSingleChatRoomDto 조회용_참가중인_채팅방 = new ReadSingleChatRoomDto(
             1L,
             new DetailAuctionInfoDto(1L, "경매1", 10_000, "store-name.png"),
