@@ -19,16 +19,16 @@ public class DeviceTokenService {
 
     @Transactional
     public void persist(final Long userId, final CreateDeviceTokenDto deviceTokenDto) {
-        final String newDeviceTokenValue = deviceTokenDto.deviceToken();
+        deviceTokenDto.findDeviceToken()
+                      .ifPresent(
+                              deviceToken -> processDeviceToken(userId, deviceToken));
+    }
 
-        if (newDeviceTokenValue == null || newDeviceTokenValue.isBlank()) {
-            return;
-        }
-
+    private void processDeviceToken(final Long userId, final String targetDeviceToken) {
         deviceTokenRepository.findByUserId(userId)
                              .ifPresentOrElse(
-                                     deviceToken -> updateDeviceToken(deviceToken, newDeviceTokenValue),
-                                     () -> persistDeviceToken(userId, newDeviceTokenValue)
+                                     persistDeviceToken -> updateDeviceToken(persistDeviceToken, targetDeviceToken),
+                                     () -> persistDeviceToken(userId, targetDeviceToken)
                              );
     }
 
