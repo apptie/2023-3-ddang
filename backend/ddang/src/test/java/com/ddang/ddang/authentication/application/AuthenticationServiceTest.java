@@ -88,7 +88,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         final LoginInfoDto actual = authenticationService.login(
                 가입하지_않은_사용자_회원_정보.findUserId(),
                 지원하는_소셜_로그인_타입,
-                디바이스_토큰
+                로그인_요청_디바이스_토큰_정보
         );
 
         // then
@@ -108,7 +108,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         final LoginInfoDto actual = authenticationService.login(
                 가입한_사용자_회원_정보.findUserId(),
                 지원하는_소셜_로그인_타입,
-                디바이스_토큰
+                로그인_요청_디바이스_토큰_정보
         );
 
         // then
@@ -129,7 +129,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         final LoginInfoDto actual = authenticationService.login(
                 가입하지_않은_사용자_회원_정보.findUserId(),
                 지원하는_소셜_로그인_타입,
-                디바이스_토큰
+                로그인_요청_디바이스_토큰_정보
         );
 
         // then

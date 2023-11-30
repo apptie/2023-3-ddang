@@ -4,6 +4,7 @@ import com.ddang.ddang.auction.domain.Auction;
 import com.ddang.ddang.auction.domain.BidUnit;
 import com.ddang.ddang.auction.domain.Price;
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
+import com.ddang.ddang.authentication.application.dto.request.RequestLoginDeviceTokenDto;
 import com.ddang.ddang.authentication.domain.TokenEncoder;
 import com.ddang.ddang.authentication.domain.TokenType;
 import com.ddang.ddang.authentication.domain.dto.UserInformationDto;
@@ -39,6 +40,7 @@ public class AuthenticationServiceFixture {
     protected String 만료된_소셜_로그인_토큰;
 
     protected String 디바이스_토큰 = "deviceToken";
+    protected RequestLoginDeviceTokenDto 로그인_요청_디바이스_토큰_정보 = new RequestLoginDeviceTokenDto(디바이스_토큰);
 
     protected String 사용자_이름;
     protected User 사용자;

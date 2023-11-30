@@ -1,6 +1,7 @@
 package com.ddang.ddang.authentication.application;
 
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
+import com.ddang.ddang.authentication.application.dto.request.RequestLoginDeviceTokenDto;
 import com.ddang.ddang.authentication.application.dto.response.LoginInfoDto;
 import com.ddang.ddang.authentication.application.dto.response.LoginUserInfoDto;
 import com.ddang.ddang.authentication.application.dto.response.TokenDto;
@@ -49,11 +50,11 @@ public class AuthenticationService {
     public LoginInfoDto login(
             final String socialId,
             final Oauth2Type oauth2Type,
-            final String deviceToken
+            final RequestLoginDeviceTokenDto deviceTokenDto
     ) {
         final LoginUserInfoDto loginUserInfo = findOrPersistUser(socialId, oauth2Type);
 
-        updateOrPersistDeviceToken(deviceToken, loginUserInfo.user());
+        updateOrPersistDeviceToken(deviceTokenDto, loginUserInfo.user());
 
         return LoginInfoDto.of(convertTokenDto(loginUserInfo), loginUserInfo);
     }
@@ -80,8 +81,8 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
-    private void updateOrPersistDeviceToken(final String deviceToken, final User persistUser) {
-        final CreateDeviceTokenDto createDeviceTokenDto = new CreateDeviceTokenDto(deviceToken);
+    private void updateOrPersistDeviceToken(final RequestLoginDeviceTokenDto deviceTokenDto, final User persistUser) {
+        final CreateDeviceTokenDto createDeviceTokenDto = CreateDeviceTokenDto.from(deviceTokenDto);
 
         deviceTokenService.persist(persistUser.getId(), createDeviceTokenDto);
     }

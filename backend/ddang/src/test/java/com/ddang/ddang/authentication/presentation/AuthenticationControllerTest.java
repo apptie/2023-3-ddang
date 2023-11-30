@@ -1,5 +1,6 @@
 package com.ddang.ddang.authentication.presentation;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -18,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.ddang.ddang.authentication.application.dto.request.RequestLoginDeviceTokenDto;
 import com.ddang.ddang.authentication.application.exception.InvalidWithdrawalException;
 import com.ddang.ddang.authentication.application.exception.WithdrawalNotAllowedException;
 import com.ddang.ddang.authentication.configuration.Oauth2TypeConverter;
@@ -60,7 +62,7 @@ class AuthenticationControllerTest extends AuthenticationControllerFixture {
     void 소셜_로그인을_지원하는_타입과_소셜_로그인_토큰을_전달하면_accessToken과_refreshToken을_반환한다() throws Exception {
         // given
         given(socialUserInformationService.findInformation(eq(지원하는_소셜_로그인_타입), anyString())).willReturn(회원_소셜_정보);
-        given(authenticationService.login(anyString(), eq(지원하는_소셜_로그인_타입), anyString())).willReturn(로그인한_사용자_정보);
+        given(authenticationService.login(anyString(), eq(지원하는_소셜_로그인_타입), any(RequestLoginDeviceTokenDto.class))).willReturn(로그인한_사용자_정보);
 
         // when & then
         final ResultActions resultActions =
