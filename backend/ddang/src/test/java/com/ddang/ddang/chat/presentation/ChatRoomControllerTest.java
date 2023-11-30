@@ -170,7 +170,7 @@ class ChatRoomControllerTest extends ChatRoomControllerFixture {
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
         given(messageService.readAllByLastMessageId(any(ReadMessageDto.class))).willReturn(List.of(조회용_메시지));
 
-        final ReadMessageResponse expected = ReadMessageResponse.of(조회용_메시지, true);
+        final ReadMessageResponse expected = ReadMessageResponse.of(조회용_메시지, 조회용_메세지_작성자_정보);
 
         // when & then
         final ResultActions resultActions = mockMvc.perform(

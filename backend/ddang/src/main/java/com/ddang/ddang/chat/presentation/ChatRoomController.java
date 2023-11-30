@@ -58,14 +58,15 @@ public class ChatRoomController {
     public ResponseEntity<List<ReadMultipleChatRoomResponse>> readAllParticipatingChatRooms(
             @AuthenticateUser final AuthenticationUserInfo userInfo
     ) {
-        final List<ReadMultipleChatRoomDto> readMultipleChatRoomDtos = chatRoomService.readAllByUserId(userInfo.userId());
+        final List<ReadMultipleChatRoomDto> readMultipleChatRoomDtos = chatRoomService.readAllByUserId(
+                userInfo.userId());
         final List<ReadMultipleChatRoomResponse> responses =
                 readMultipleChatRoomDtos.stream()
                                         .map(dto -> ReadMultipleChatRoomResponse.of(
-                                                     dto,
-                                                     urlFinder.find(ImageTargetType.PROFILE_IMAGE),
-                                                     urlFinder.find(ImageTargetType.AUCTION_IMAGE)
-                                             ))
+                                                dto,
+                                                urlFinder.find(ImageTargetType.PROFILE_IMAGE),
+                                                urlFinder.find(ImageTargetType.AUCTION_IMAGE)
+                                        ))
                                         .toList();
 
         return ResponseEntity.ok(responses);
@@ -118,21 +119,15 @@ public class ChatRoomController {
                 lastMessageId
         );
         final List<ReadMultipleMessageDto> readMultipleMessageDtos = messageService.readAllByLastMessageId(
-                readMessageDto);
-        final List<ReadMessageResponse> responses = readMultipleMessageDtos.stream()
-                                                                           .map(dto -> ReadMessageResponse.of(
-                                                                           dto,
-                                                                           isMessageOwner(
-                                                                                   dto,
-                                                                                   userInfo
-                                                                           )
-                                                                   ))
-                                                                           .toList();
-        return ResponseEntity.ok(responses);
-    }
+                readMessageDto
+        );
+        final List<ReadMessageResponse> responses =
+                readMultipleMessageDtos.stream()
+                                       .map(
+                                               dto -> ReadMessageResponse.of(dto, userInfo)
+                                       )
+                                       .toList();
 
-    private boolean isMessageOwner(final ReadMultipleMessageDto readMultipleMessageDto, final AuthenticationUserInfo userInfo) {
-        return readMultipleMessageDto.writerId()
-                                     .equals(userInfo.userId());
+        return ResponseEntity.ok(responses);
     }
 }
