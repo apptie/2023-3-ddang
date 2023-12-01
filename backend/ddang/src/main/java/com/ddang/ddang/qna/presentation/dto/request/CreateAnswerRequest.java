@@ -1,5 +1,6 @@
 package com.ddang.ddang.qna.presentation.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -9,7 +10,7 @@ public record CreateAnswerRequest(
         @Positive(message = "경매 아이디는 양수입니다.")
         Long auctionId,
 
-        @NotEmpty(message = "답변이 입력되지 않았습니다.")
+        @NotBlank(message = "답변이 입력되지 않았습니다.")
         String content
 ) {
 }
