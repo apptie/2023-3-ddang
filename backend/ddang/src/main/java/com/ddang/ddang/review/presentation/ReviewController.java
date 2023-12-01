@@ -46,7 +46,7 @@ public class ReviewController {
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReadSingleReviewResponse> read(@PathVariable final Long reviewId) {
         final ReadSingleReviewDto readSingleReviewDto = reviewService.readByReviewId(reviewId);
-        ReadSingleReviewResponse response = ReadSingleReviewResponse.from(readSingleReviewDto);
+        final ReadSingleReviewResponse response = ReadSingleReviewResponse.from(readSingleReviewDto);
 
         return ResponseEntity.ok(response);
     }
