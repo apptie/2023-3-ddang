@@ -5,16 +5,16 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.ddang.ddang.auction.application.dto.response.CreateInfoAuctionDto;
+import com.ddang.ddang.auction.application.dto.response.ReadMultipleAuctionDto;
 import com.ddang.ddang.auction.application.dto.response.ReadMultipleAuctionDto.AuctionInfoDto;
 import com.ddang.ddang.auction.application.dto.response.ReadSingleAuctionDto;
-import com.ddang.ddang.auction.application.dto.response.ReadMultipleAuctionDto;
+import com.ddang.ddang.auction.application.exception.InvalidThirdRegionException;
 import com.ddang.ddang.auction.application.exception.UserForbiddenException;
 import com.ddang.ddang.auction.application.fixture.AuctionServiceFixture;
 import com.ddang.ddang.auction.infrastructure.persistence.exception.AuctionNotFoundException;
 import com.ddang.ddang.auction.presentation.dto.request.ReadAuctionSearchCondition;
 import com.ddang.ddang.category.infrastructure.exception.CategoryNotFoundException;
 import com.ddang.ddang.configuration.IsolateDatabase;
-import com.ddang.ddang.region.application.exception.RegionNotFoundException;
 import com.ddang.ddang.user.infrastructure.exception.UserNotFoundException;
 import java.util.List;
 import org.assertj.core.api.SoftAssertions;
@@ -54,16 +54,14 @@ class AuctionServiceTest extends AuctionServiceFixture {
     void 지정한_아이디에_해당하는_지역이_없을때_경매를_등록하면_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> auctionService.create(존재하지_않는_지역의_경매_생성_dto))
-                .isInstanceOf(RegionNotFoundException.class)
-                .hasMessage("지정한 세 번째 지역이 없습니다.");
+                .isInstanceOf(InvalidThirdRegionException.class);
     }
 
     @Test
     void 지정한_아이디에_해당하는_지역이_세_번째_지역이_아닐_떄_경매를_등록하면_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> auctionService.create(두_번째_지역의_경매_생성_dto))
-                .isInstanceOf(RegionNotFoundException.class)
-                .hasMessage("지정한 세 번째 지역이 없습니다.");
+                .isInstanceOf(InvalidThirdRegionException.class);
     }
 
     @Test

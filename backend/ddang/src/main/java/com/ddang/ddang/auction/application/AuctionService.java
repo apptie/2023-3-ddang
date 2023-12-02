@@ -2,8 +2,9 @@ package com.ddang.ddang.auction.application;
 
 import com.ddang.ddang.auction.application.dto.request.CreateAuctionDto;
 import com.ddang.ddang.auction.application.dto.response.CreateInfoAuctionDto;
-import com.ddang.ddang.auction.application.dto.response.ReadSingleAuctionDto;
 import com.ddang.ddang.auction.application.dto.response.ReadMultipleAuctionDto;
+import com.ddang.ddang.auction.application.dto.response.ReadSingleAuctionDto;
+import com.ddang.ddang.auction.application.exception.InvalidThirdRegionException;
 import com.ddang.ddang.auction.application.exception.UserForbiddenException;
 import com.ddang.ddang.auction.domain.Auction;
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
@@ -13,7 +14,6 @@ import com.ddang.ddang.category.domain.repository.CategoryRepository;
 import com.ddang.ddang.image.domain.AuctionImage;
 import com.ddang.ddang.image.domain.StoreImageProcessor;
 import com.ddang.ddang.image.domain.dto.StoreImageDto;
-import com.ddang.ddang.region.application.exception.RegionNotFoundException;
 import com.ddang.ddang.region.domain.AuctionRegion;
 import com.ddang.ddang.region.domain.Region;
 import com.ddang.ddang.region.domain.repository.RegionRepository;
@@ -65,7 +65,7 @@ public class AuctionService {
 
     private void validateAuctionRegions(final List<Region> thirdRegions) {
         if (thirdRegions.isEmpty()) {
-            throw new RegionNotFoundException("지정한 세 번째 지역이 없습니다.");
+            throw new InvalidThirdRegionException("지정한 세 번째 지역이 없습니다.");
         }
     }
 
