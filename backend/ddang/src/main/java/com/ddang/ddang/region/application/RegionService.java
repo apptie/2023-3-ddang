@@ -1,15 +1,15 @@
 package com.ddang.ddang.region.application;
 
+import com.ddang.ddang.auction.application.exception.UninitializedRegionException;
 import com.ddang.ddang.region.application.dto.response.ReadRegionDto;
 import com.ddang.ddang.region.application.exception.RegionNotFoundException;
 import com.ddang.ddang.region.domain.InitializationRegionProcessor;
 import com.ddang.ddang.region.domain.Region;
 import com.ddang.ddang.region.domain.repository.RegionRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,7 +30,7 @@ public class RegionService {
         final List<Region> firstRegions = regionRepository.findFirstAll();
 
         if (firstRegions.isEmpty()) {
-            throw new RegionNotFoundException("등록된 지역이 없습니다.");
+            throw new UninitializedRegionException("등록된 지역이 없습니다.");
         }
 
         return firstRegions.stream()
