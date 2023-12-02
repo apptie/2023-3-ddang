@@ -20,7 +20,7 @@ import com.ddang.ddang.authentication.configuration.AuthenticationPrincipalArgum
 import com.ddang.ddang.authentication.domain.TokenDecoder;
 import com.ddang.ddang.authentication.domain.TokenType;
 import com.ddang.ddang.authentication.configuration.AuthenticationStore;
-import com.ddang.ddang.exception.GlobalExceptionHandler;
+import com.ddang.ddang.common.exception.GlobalExceptionHandler;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

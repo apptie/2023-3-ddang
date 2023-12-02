@@ -26,7 +26,7 @@ import com.ddang.ddang.authentication.configuration.Oauth2TypeConverter;
 import com.ddang.ddang.authentication.domain.exception.InvalidTokenException;
 import com.ddang.ddang.authentication.domain.exception.UnsupportedSocialLoginException;
 import com.ddang.ddang.authentication.presentation.fixture.AuthenticationControllerFixture;
-import com.ddang.ddang.exception.GlobalExceptionHandler;
+import com.ddang.ddang.common.exception.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.format.support.FormattingConversionService;

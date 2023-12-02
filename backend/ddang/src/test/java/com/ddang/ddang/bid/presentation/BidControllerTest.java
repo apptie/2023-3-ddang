@@ -31,7 +31,7 @@ import com.ddang.ddang.bid.application.exception.InvalidBidPriceException;
 import com.ddang.ddang.bid.application.exception.InvalidBidderException;
 import com.ddang.ddang.bid.presentation.dto.request.CreateBidRequest;
 import com.ddang.ddang.bid.presentation.fixture.BidControllerFixture;
-import com.ddang.ddang.exception.GlobalExceptionHandler;
+import com.ddang.ddang.common.exception.GlobalExceptionHandler;
 import com.ddang.ddang.user.infrastructure.exception.UserNotFoundException;
 import java.util.List;
 import java.util.Optional;

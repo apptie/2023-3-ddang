@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.ddang.ddang.exception.GlobalExceptionHandler;
+import com.ddang.ddang.common.exception.GlobalExceptionHandler;
 import com.ddang.ddang.image.application.exception.ImageNotFoundException;
 import com.ddang.ddang.image.presentation.fixture.ImageControllerFixture;
 import java.net.MalformedURLException;

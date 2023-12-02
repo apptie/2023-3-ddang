@@ -8,7 +8,7 @@ import com.ddang.ddang.authentication.domain.TokenType;
 import com.ddang.ddang.authentication.configuration.AuthenticationStore;
 import com.ddang.ddang.device.application.dto.request.CreateDeviceTokenDto;
 import com.ddang.ddang.device.presentation.fixture.DeviceTokenControllerFixture;
-import com.ddang.ddang.exception.GlobalExceptionHandler;
+import com.ddang.ddang.common.exception.GlobalExceptionHandler;
 import com.ddang.ddang.user.infrastructure.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

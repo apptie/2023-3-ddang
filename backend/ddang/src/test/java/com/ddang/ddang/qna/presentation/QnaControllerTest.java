@@ -30,7 +30,7 @@ import com.ddang.ddang.authentication.configuration.AuthenticationPrincipalArgum
 import com.ddang.ddang.authentication.domain.TokenDecoder;
 import com.ddang.ddang.authentication.domain.TokenType;
 import com.ddang.ddang.authentication.configuration.AuthenticationStore;
-import com.ddang.ddang.exception.GlobalExceptionHandler;
+import com.ddang.ddang.common.exception.GlobalExceptionHandler;
 import com.ddang.ddang.qna.application.dto.request.CreateAnswerDto;
 import com.ddang.ddang.qna.application.dto.request.CreateQuestionDto;
 import com.ddang.ddang.qna.application.exception.AlreadyAnsweredException;

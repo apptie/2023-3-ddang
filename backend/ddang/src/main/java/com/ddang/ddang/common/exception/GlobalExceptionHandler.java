@@ -1,4 +1,4 @@
-package com.ddang.ddang.exception;
+package com.ddang.ddang.common.exception;
 
 import com.ddang.ddang.auction.application.exception.UserForbiddenException;
 import com.ddang.ddang.auction.configuration.exception.InvalidSearchConditionException;
@@ -18,8 +18,8 @@ import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
 import com.ddang.ddang.chat.application.exception.UnableToChatException;
 import com.ddang.ddang.chat.infrastructure.exception.ChatRoomNotFoundException;
 import com.ddang.ddang.chat.infrastructure.exception.ReadMessageLogNotFoundException;
+import com.ddang.ddang.common.exception.dto.ExceptionResponse;
 import com.ddang.ddang.device.application.exception.DeviceTokenNotFoundException;
-import com.ddang.ddang.exception.dto.ExceptionResponse;
 import com.ddang.ddang.image.application.exception.ImageNotFoundException;
 import com.ddang.ddang.image.infrastructure.local.exception.EmptyImageException;
 import com.ddang.ddang.image.infrastructure.local.exception.StoreImageFailureException;

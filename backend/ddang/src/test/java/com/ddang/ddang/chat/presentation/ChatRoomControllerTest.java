@@ -40,7 +40,7 @@ import com.ddang.ddang.chat.infrastructure.exception.ChatRoomNotFoundException;
 import com.ddang.ddang.chat.application.dto.request.ReadMessageDto;
 import com.ddang.ddang.chat.presentation.dto.response.ReadMessageResponse;
 import com.ddang.ddang.chat.presentation.fixture.ChatRoomControllerFixture;
-import com.ddang.ddang.exception.GlobalExceptionHandler;
+import com.ddang.ddang.common.exception.GlobalExceptionHandler;
 import com.ddang.ddang.user.infrastructure.exception.UserNotFoundException;
 import java.util.Collections;
 import java.util.List;
