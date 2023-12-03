@@ -9,6 +9,7 @@ import com.ddang.ddang.configuration.IsolateDatabase;
 import com.ddang.ddang.qna.application.dto.response.ReadMultipleQnaDto;
 import com.ddang.ddang.qna.application.dto.response.ReadMultipleQnaDto.QnaInfoDto;
 import com.ddang.ddang.qna.application.event.QuestionNotificationEvent;
+import com.ddang.ddang.qna.application.exception.AuctionNotFoundToAskQuestionException;
 import com.ddang.ddang.qna.application.exception.InvalidAuctionToAskQuestionException;
 import com.ddang.ddang.qna.application.exception.InvalidQuestionerException;
 import com.ddang.ddang.qna.infrastructure.exception.QuestionNotFoundException;
@@ -112,8 +113,7 @@ class QuestionServiceTest extends QuestionServiceFixture {
     void 존재하지_않는_경매_아이디를_통해_질문과_답변을_모두_조회할시_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> questionService.readAllByAuctionId(존재하지_않는_경매_아이디, 질문하지_않은_사용자.getId()))
-                .isInstanceOf(AuctionNotFoundException.class)
-                .hasMessage("해당 경매를 찾을 수 없습니다.");
+                .isInstanceOf(AuctionNotFoundToAskQuestionException.class);
     }
 
     @Test

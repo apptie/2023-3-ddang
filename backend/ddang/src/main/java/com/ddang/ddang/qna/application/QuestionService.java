@@ -1,12 +1,12 @@
 package com.ddang.ddang.qna.application;
 
-import com.ddang.ddang.auction.infrastructure.persistence.exception.AuctionNotFoundException;
 import com.ddang.ddang.auction.application.exception.UserForbiddenException;
 import com.ddang.ddang.auction.domain.Auction;
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
 import com.ddang.ddang.qna.application.dto.request.CreateQuestionDto;
 import com.ddang.ddang.qna.application.dto.response.ReadMultipleQnaDto;
 import com.ddang.ddang.qna.application.event.QuestionNotificationEvent;
+import com.ddang.ddang.qna.application.exception.AuctionNotFoundToAskQuestionException;
 import com.ddang.ddang.qna.application.exception.InvalidAuctionToAskQuestionException;
 import com.ddang.ddang.qna.application.exception.InvalidQuestionerException;
 import com.ddang.ddang.qna.domain.Question;
@@ -61,7 +61,7 @@ public class QuestionService {
 
     public ReadMultipleQnaDto readAllByAuctionId(final Long auctionId, final Long userId) {
         if (!auctionRepository.existsById(auctionId)) {
-            throw new AuctionNotFoundException("해당 경매를 찾을 수 없습니다.");
+            throw new AuctionNotFoundToAskQuestionException("해당 경매를 찾을 수 없습니다.");
         }
 
         final User user = userRepository.findById(userId)
