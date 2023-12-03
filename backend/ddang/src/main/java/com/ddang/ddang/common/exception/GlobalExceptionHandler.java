@@ -10,10 +10,12 @@ import com.ddang.ddang.authentication.application.exception.WithdrawalNotAllowed
 import com.ddang.ddang.authentication.configuration.exception.UserUnauthorizedException;
 import com.ddang.ddang.authentication.domain.exception.InvalidTokenException;
 import com.ddang.ddang.authentication.domain.exception.UnsupportedSocialLoginException;
-import com.ddang.ddang.bid.application.exception.InvalidBidException;
+import com.ddang.ddang.bid.application.exception.InvalidAuctionToBidException;
+import com.ddang.ddang.bid.application.exception.InvalidBidPriceException;
+import com.ddang.ddang.bid.application.exception.InvalidBidderException;
 import com.ddang.ddang.category.infrastructure.exception.CategoryNotFoundException;
-import com.ddang.ddang.chat.application.exception.InvalidAuctionToChatException;
 import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException;
+import com.ddang.ddang.chat.application.exception.InvalidAuctionToChatException;
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
 import com.ddang.ddang.chat.application.exception.UnableToChatException;
 import com.ddang.ddang.chat.infrastructure.exception.ChatRoomNotFoundException;
@@ -153,8 +155,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                              .body(new ExceptionResponse(ex.getMessage()));
     }
 
-    @ExceptionHandler(InvalidBidException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidBidException(final InvalidBidException ex) {
+    @ExceptionHandler(InvalidAuctionToBidException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidAuctionToBidException(final InvalidAuctionToBidException ex) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidBidderException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidBidderException(final InvalidBidderException ex) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidBidPriceException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidBidPriceException(final InvalidBidPriceException ex) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
