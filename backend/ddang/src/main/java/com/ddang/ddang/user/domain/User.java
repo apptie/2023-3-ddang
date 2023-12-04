@@ -23,8 +23,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.UUID;
-
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -90,9 +88,9 @@ public class User extends BaseTimeEntity {
         this.profileImage = profileImage;
     }
 
-    public void withdrawal() {
+    public void withdrawal(final String withdrawalUserName) {
         this.deleted = DELETED_STATUS;
-        this.name = UUID.randomUUID().toString();
+        this.name = withdrawalUserName;
         this.profileImage = null;
     }
 

@@ -35,6 +35,6 @@ public class AuthenticationUserServiceFixture {
         userRepository.save(사용자);
         userRepository.save(탈퇴한_사용자);
 
-        탈퇴한_사용자.withdrawal();
+        탈퇴한_사용자.withdrawal("탈퇴한 사용자");
     }
 }

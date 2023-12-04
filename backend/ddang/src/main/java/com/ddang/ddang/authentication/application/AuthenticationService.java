@@ -43,7 +43,7 @@ public class AuthenticationService {
     private final TokenDecoder tokenDecoder;
     private final BlackListTokenService blackListTokenService;
     private final DeviceTokenRepository deviceTokenRepository;
-    private final UserNameGenerator generator;
+    private final UserNameGenerator userNameGenerator;
 
     @Transactional
     public LoginInfoDto login(
@@ -71,7 +71,7 @@ public class AuthenticationService {
 
     private User persistUser(final String socialId, final Oauth2Type oauth2Type) {
         final User user = User.builder()
-                              .name(oauth2Type.calculateNickname(generator.generate()))
+                              .name(oauth2Type.calculateNickname(userNameGenerator.generate()))
                               .reliability(Reliability.INITIAL_RELIABILITY)
                               .oauthId(socialId)
                               .oauth2Type(oauth2Type)
@@ -142,7 +142,7 @@ public class AuthenticationService {
 
         validateCanWithdrawal(user);
 
-        user.withdrawal();
+        user.withdrawal(userNameGenerator.generate());
         blackListTokenService.registerBlackListToken(accessToken, refreshToken);
         deviceTokenRepository.deleteByUserId(user.getId());
         provider.unlinkUserBy(user.getOauthInformation().getOauthId());
