@@ -2,7 +2,7 @@ package com.ddang.ddang.user.presentation;
 
 import com.ddang.ddang.authentication.configuration.AuthenticateUser;
 import com.ddang.ddang.authentication.domain.dto.AuthenticationUserInfo;
-import com.ddang.ddang.image.presentation.util.ImageRelativeUrlFinder;
+import com.ddang.ddang.image.presentation.util.ImageUrlFinder;
 import com.ddang.ddang.image.presentation.util.ImageTargetType;
 import com.ddang.ddang.user.application.UserService;
 import com.ddang.ddang.user.application.dto.request.ReadUserDto;
@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final UserService userService;
-    private final ImageRelativeUrlFinder urlFinder;
+    private final ImageUrlFinder urlFinder;
 
     @GetMapping
     public ResponseEntity<ReadUserResponse> readById(@AuthenticateUser final AuthenticationUserInfo userInfo) {

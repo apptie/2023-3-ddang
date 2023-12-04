@@ -5,7 +5,7 @@ import com.ddang.ddang.auction.application.dto.response.ReadMultipleAuctionDto;
 import com.ddang.ddang.auction.configuration.DescendingSort;
 import com.ddang.ddang.authentication.configuration.AuthenticateUser;
 import com.ddang.ddang.authentication.domain.dto.AuthenticationUserInfo;
-import com.ddang.ddang.image.presentation.util.ImageRelativeUrlFinder;
+import com.ddang.ddang.image.presentation.util.ImageUrlFinder;
 import com.ddang.ddang.image.presentation.util.ImageTargetType;
 import com.ddang.ddang.user.presentation.dto.response.ReadAuctionsResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserAuctionController {
 
     private final AuctionService auctionService;
-    private final ImageRelativeUrlFinder urlFinder;
+    private final ImageUrlFinder urlFinder;
 
     @GetMapping("/mine")
     public ResponseEntity<ReadAuctionsResponse> readAllByUserInfo(

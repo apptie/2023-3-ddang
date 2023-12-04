@@ -17,7 +17,7 @@ import com.ddang.ddang.chat.presentation.dto.response.CreateMessageResponse;
 import com.ddang.ddang.chat.presentation.dto.response.ReadSingleChatRoomResponse;
 import com.ddang.ddang.chat.presentation.dto.response.ReadMultipleChatRoomResponse;
 import com.ddang.ddang.chat.presentation.dto.response.ReadMessageResponse;
-import com.ddang.ddang.image.presentation.util.ImageRelativeUrlFinder;
+import com.ddang.ddang.image.presentation.util.ImageUrlFinder;
 import com.ddang.ddang.image.presentation.util.ImageTargetType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
     private final MessageService messageService;
-    private final ImageRelativeUrlFinder urlFinder;
+    private final ImageUrlFinder urlFinder;
 
     @PostMapping
     public ResponseEntity<CreateChatRoomResponse> createChatRoom(

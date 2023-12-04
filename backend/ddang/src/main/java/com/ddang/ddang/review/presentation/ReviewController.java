@@ -2,7 +2,7 @@ package com.ddang.ddang.review.presentation;
 
 import com.ddang.ddang.authentication.configuration.AuthenticateUser;
 import com.ddang.ddang.authentication.domain.dto.AuthenticationUserInfo;
-import com.ddang.ddang.image.presentation.util.ImageRelativeUrlFinder;
+import com.ddang.ddang.image.presentation.util.ImageUrlFinder;
 import com.ddang.ddang.image.presentation.util.ImageTargetType;
 import com.ddang.ddang.review.application.ReviewService;
 import com.ddang.ddang.review.application.dto.request.CreateReviewDto;
@@ -30,7 +30,7 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final ImageRelativeUrlFinder urlFinder;
+    private final ImageUrlFinder urlFinder;
 
     @PostMapping
     public ResponseEntity<Void> create(

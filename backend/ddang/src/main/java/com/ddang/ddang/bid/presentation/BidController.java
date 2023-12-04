@@ -7,7 +7,7 @@ import com.ddang.ddang.bid.application.dto.request.CreateBidDto;
 import com.ddang.ddang.bid.application.dto.response.ReadBidDto;
 import com.ddang.ddang.bid.presentation.dto.request.CreateBidRequest;
 import com.ddang.ddang.bid.presentation.dto.response.ReadBidResponse;
-import com.ddang.ddang.image.presentation.util.ImageRelativeUrlFinder;
+import com.ddang.ddang.image.presentation.util.ImageUrlFinder;
 import com.ddang.ddang.image.presentation.util.ImageTargetType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.List;
 public class BidController {
 
     private final BidService bidService;
-    private final ImageRelativeUrlFinder urlFinder;
+    private final ImageUrlFinder urlFinder;
 
     @PostMapping
     public ResponseEntity<Void> create(

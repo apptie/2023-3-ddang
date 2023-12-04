@@ -17,7 +17,7 @@ import com.ddang.ddang.device.presentation.DeviceTokenController;
 import com.ddang.ddang.image.application.ImageService;
 import com.ddang.ddang.image.configuration.ImageRelativeUrlConfigurationProperties;
 import com.ddang.ddang.image.presentation.ImageController;
-import com.ddang.ddang.image.presentation.util.ImageRelativeUrlFinder;
+import com.ddang.ddang.image.presentation.util.ImageUrlFinder;
 import com.ddang.ddang.qna.application.AnswerService;
 import com.ddang.ddang.qna.application.QuestionService;
 import com.ddang.ddang.region.application.RegionService;
@@ -163,7 +163,7 @@ public abstract class CommonControllerSliceTest {
     protected ImageRelativeUrlConfigurationProperties imageRelativeUrl =
             new ImageRelativeUrlConfigurationProperties("/auctions/images/", "/users/images/");
 
-    protected ImageRelativeUrlFinder urlFinder = new ImageRelativeUrlFinder(imageRelativeUrl);
+    protected ImageUrlFinder urlFinder = new ImageUrlFinder(imageRelativeUrl);
 
     protected ObjectMapper objectMapper;
 
