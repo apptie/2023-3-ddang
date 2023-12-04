@@ -120,7 +120,7 @@ public class AuthenticationServiceFixture {
                                                   .build();
 
         userRepository.save(사용자);
-        탈퇴한_사용자.withdrawal();
+        탈퇴한_사용자.withdrawal("탈퇴한 사용자");
         userRepository.save(탈퇴한_사용자);
         userRepository.save(현재_진행중인_경매가_있는_사용자);
         userRepository.save(현재_진행중인_경매의_마지막_입찰자인_사용자);

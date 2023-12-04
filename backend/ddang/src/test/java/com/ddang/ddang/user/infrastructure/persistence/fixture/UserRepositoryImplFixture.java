@@ -41,7 +41,7 @@ public class UserRepositoryImplFixture {
                       .reliability(new Reliability(4.7d))
                       .oauthId("12345")
                       .build();
-        탈퇴한_사용자.withdrawal();
+        탈퇴한_사용자.withdrawal("탈퇴한 사용자");
 
         userRepository.save(사용자);
         userRepository.save(탈퇴한_사용자);

@@ -2,7 +2,7 @@ package com.ddang.ddang.qna.presentation;
 
 import com.ddang.ddang.authentication.configuration.AuthenticateUser;
 import com.ddang.ddang.authentication.domain.dto.AuthenticationUserInfo;
-import com.ddang.ddang.image.presentation.util.ImageRelativeUrlFinder;
+import com.ddang.ddang.image.presentation.util.ImageUrlFinder;
 import com.ddang.ddang.image.presentation.util.ImageTargetType;
 import com.ddang.ddang.qna.application.AnswerService;
 import com.ddang.ddang.qna.application.QuestionService;
@@ -29,7 +29,7 @@ public class QnaController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
-    private final ImageRelativeUrlFinder urlFinder;
+    private final ImageUrlFinder urlFinder;
 
     @PostMapping
     public ResponseEntity<Void> createQuestion(

@@ -50,7 +50,7 @@ public class ChatRoomFixture {
                         .reliability(new Reliability(4.7d))
                         .oauthId("12348")
                         .build();
-        탈퇴한_사용자.withdrawal();
+        탈퇴한_사용자.withdrawal("탈퇴한 사용자");
 
         경매 = Auction.builder()
                      .seller(판매자)

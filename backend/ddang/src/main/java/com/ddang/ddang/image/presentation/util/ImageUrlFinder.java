@@ -7,9 +7,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Component
 @RequiredArgsConstructor
-public class ImageRelativeUrlFinder {
+public class ImageUrlFinder {
 
-    private final ImageRelativeUrlConfigurationProperties imageRelativeUrl;
+    private final ImageRelativeUrlConfigurationProperties imageRelativeUrlInfo;
 
     public String find(final ImageTargetType imageTargetType) {
         final String imageBaseUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -17,9 +17,9 @@ public class ImageRelativeUrlFinder {
                                                                .toUriString();
 
         if (ImageTargetType.AUCTION_IMAGE == imageTargetType) {
-            return imageBaseUrl + imageRelativeUrl.auctionImage();
+            return imageBaseUrl + imageRelativeUrlInfo.auctionImage();
         }
 
-        return imageBaseUrl + imageRelativeUrl.profileImage();
+        return imageBaseUrl + imageRelativeUrlInfo.profileImage();
     }
 }

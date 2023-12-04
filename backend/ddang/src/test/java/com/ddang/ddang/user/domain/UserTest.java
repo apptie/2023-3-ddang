@@ -102,7 +102,7 @@ class UserTest extends UserFixture {
                               .build();
 
         // when
-        user.withdrawal();
+        user.withdrawal("탈퇴한 사용자");
 
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
@@ -144,7 +144,7 @@ class UserTest extends UserFixture {
         // given
         final User user = User.builder()
                               .build();
-        user.withdrawal();
+        user.withdrawal("탈퇴한 사용자");
 
         // when
         final String actual = user.findName();

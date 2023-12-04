@@ -3,7 +3,7 @@ package com.ddang.ddang.qna.presentation;
 import com.ddang.ddang.qna.presentation.dto.response.ReadMultipleQnaResponse;
 import com.ddang.ddang.authentication.configuration.AuthenticateUser;
 import com.ddang.ddang.authentication.domain.dto.AuthenticationUserInfo;
-import com.ddang.ddang.image.presentation.util.ImageRelativeUrlFinder;
+import com.ddang.ddang.image.presentation.util.ImageUrlFinder;
 import com.ddang.ddang.image.presentation.util.ImageTargetType;
 import com.ddang.ddang.qna.application.QuestionService;
 import com.ddang.ddang.qna.application.dto.response.ReadMultipleQnaDto;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuctionQnaController {
 
     private final QuestionService questionService;
-    private final ImageRelativeUrlFinder urlFinder;
+    private final ImageUrlFinder urlFinder;
 
     @GetMapping("/{auctionId}/questions")
     public ResponseEntity<ReadMultipleQnaResponse> readAllByAuctionId(

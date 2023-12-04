@@ -15,7 +15,7 @@ import com.ddang.ddang.auction.presentation.dto.response.ReadMultipleAuctionResp
 import com.ddang.ddang.authentication.configuration.AuthenticateUser;
 import com.ddang.ddang.authentication.domain.dto.AuthenticationUserInfo;
 import com.ddang.ddang.chat.application.ChatRoomService;
-import com.ddang.ddang.image.presentation.util.ImageRelativeUrlFinder;
+import com.ddang.ddang.image.presentation.util.ImageUrlFinder;
 import com.ddang.ddang.image.presentation.util.ImageTargetType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class AuctionController {
 
     private final AuctionService auctionService;
     private final ChatRoomService chatRoomService;
-    private final ImageRelativeUrlFinder urlFinder;
+    private final ImageUrlFinder urlFinder;
 
     @PostMapping
     public ResponseEntity<CreateAuctionResponse> create(
