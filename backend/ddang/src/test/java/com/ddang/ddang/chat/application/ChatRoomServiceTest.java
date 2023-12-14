@@ -98,7 +98,7 @@ class ChatRoomServiceTest extends ChatRoomServiceFixture {
         // when & then
         assertThatThrownBy(() -> chatRoomService.create(경매에_참여한_적_없는_사용자.getId(), 채팅방_생성을_위한_DTO))
                 .isInstanceOf(ForbiddenChattingUserException.class)
-                .hasMessage("경매의 판매자 또는 최종 낙찰자만 채팅이 가능합니다.");
+                .hasMessage("해당 경매 채팅 대상자가 아닙니다.");
     }
 
     @Test
@@ -173,7 +173,7 @@ class ChatRoomServiceTest extends ChatRoomServiceFixture {
         // when & then
         assertThatThrownBy(() -> chatRoomService.readByChatRoomId(엔초_지토_채팅방.getId(), 제이미.getId()))
                 .isInstanceOf(ForbiddenChattingUserException.class)
-                .hasMessageContaining("해당 채팅방에 접근할 권한이 없습니다.");
+                .hasMessageContaining("해당 경매 채팅 대상자가 아닙니다.");
     }
 
     @Test
