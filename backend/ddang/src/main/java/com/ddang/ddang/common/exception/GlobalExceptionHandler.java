@@ -61,17 +61,93 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String LOG_MESSAGE_FORMAT = "%s : %s";
 
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(
-            final Exception ex,
-            final Object body,
-            final HttpHeaders headers,
-            final HttpStatusCode statusCode,
-            final WebRequest request
-    ) {
-        logger.error(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()), ex);
+    @ExceptionHandler({
+            InvalidAuctionToBidException.class,
+            InvalidBidderException.class,
+            InvalidBidPriceException.class,
+            InvalidPriceValueException.class,
+            EmptyImageException.class,
+            UnsupportedImageFileExtensionException.class,
+            InvalidAuctionToChatException.class,
+            UnsupportedSocialLoginException.class,
+            AlreadyReviewException.class,
+            UnableToChatException.class,
+            WithdrawalNotAllowedException.class,
+            AlreadyExistsNameException.class,
+            AlreadyAnsweredException.class,
+            InvalidQuestionReportException.class,
+            InvalidAnswererException.class,
+            InvalidAuctionToAskQuestionException.class,
+            InvalidQuestionerException.class,
+            InvalidSearchConditionException.class,
+            AlreadyReportChatRoomException.class,
+            InvalidReporterToAuctionException.class,
+            AlreadyReportAuctionException.class,
+            InvalidReportAuctionException.class
+    })
+    public ResponseEntity<ExceptionResponse> handleBadRequestException(final Exception ex) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
 
-        return super.handleExceptionInternal(ex, body, headers, statusCode, request);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler({
+            InvalidTokenException.class,
+            UserUnauthorizedException.class
+    })
+    public ResponseEntity<ExceptionResponse> handleUnAuthorizedException(final Exception ex) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(new ExceptionResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler({
+            UserForbiddenException.class,
+            InvalidWithdrawalException.class,
+            ForbiddenChattingUserException.class,
+            InvalidChatRoomReportException.class,
+    })
+    public ResponseEntity<ExceptionResponse> handleForbiddenException(final Exception ex) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler({
+            CategoryNotFoundException.class,
+            RegionNotFoundException.class,
+            ChatRoomNotFoundException.class,
+            MessageNotFoundException.class,
+            ReadMessageLogNotFoundException.class,
+            UserNotFoundException.class,
+            AuctionNotFoundException.class,
+            ImageNotFoundException.class,
+            WinnerNotFoundException.class,
+            AnswerNotFoundException.class,
+            DeviceTokenNotFoundException.class,
+            ReviewNotFoundException.class,
+            QuestionNotFoundException.class
+    })
+    public ResponseEntity<ExceptionResponse> handleNotFoundException(final Exception ex) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                             .body(new ExceptionResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler({
+            NotificationFailedException.class,
+            StoreImageFailureException.class,
+            AuctionImageNotFoundException.class
+    })
+    public ResponseEntity<ExceptionResponse> handleInternalServerErrorException(final Exception ex) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body(new ExceptionResponse(ex.getMessage()));
     }
 
     @ExceptionHandler(MalformedURLException.class)
@@ -80,387 +156,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body(new ExceptionResponse("이미지 조회에 실패했습니다."));
-    }
-
-    @ExceptionHandler(AuctionImageNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleAuctionImageNotFoundException(
-            final AuctionImageNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleCategoryNotFoundException(final CategoryNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(RegionNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleRegionNotFoundException(final RegionNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(ChatRoomNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleChatRoomNotFoundException(final ChatRoomNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(MessageNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleMessageNotFoundException(final MessageNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(ReadMessageLogNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleReadMessageNotFoundException(final ReadMessageLogNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(UnableToChatException.class)
-    public ResponseEntity<ExceptionResponse> handleUnableToChatException(final UnableToChatException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleUserNotFoundException(final UserNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(AuctionNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleAuctionNotFoundException(final AuctionNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidAuctionToBidException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidAuctionToBidException(final InvalidAuctionToBidException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidBidderException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidBidderException(final InvalidBidderException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidBidPriceException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidBidPriceException(final InvalidBidPriceException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(UserForbiddenException.class)
-    public ResponseEntity<ExceptionResponse> handleUserNotAuthorizationException(
-            final UserForbiddenException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidWithdrawalException.class)
-    public ResponseEntity<ExceptionResponse> handleInaccessibleWithdrawalException(
-            final InvalidWithdrawalException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidPriceValueException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidPriceValueException(
-            final InvalidPriceValueException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(EmptyImageException.class)
-    public ResponseEntity<ExceptionResponse> handleEmptyImageException(final EmptyImageException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(StoreImageFailureException.class)
-    public ResponseEntity<ExceptionResponse> handleStoreImageFailureException(
-            final StoreImageFailureException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(UnsupportedImageFileExtensionException.class)
-    public ResponseEntity<ExceptionResponse> handleUnsupportedImageFileExtensionException(
-            final UnsupportedImageFileExtensionException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(ImageNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleImageNotFoundException(final ImageNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(ForbiddenChattingUserException.class)
-    public ResponseEntity<ExceptionResponse> handleUserNotAccessibleException(
-            final ForbiddenChattingUserException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(WinnerNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleWinnerNotFoundException(
-            final WinnerNotFoundException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidAuctionToChatException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidAuctionToChatException(
-            final InvalidAuctionToChatException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidReporterToAuctionException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidReporterToAuctionException(
-            final InvalidReporterToAuctionException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidReportAuctionException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidReportAuctionException(
-            final InvalidReportAuctionException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(AlreadyReportAuctionException.class)
-    public ResponseEntity<ExceptionResponse> handleAlreadyReportAuctionException(
-            final AlreadyReportAuctionException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidChatRoomReportException.class)
-    public ResponseEntity<ExceptionResponse> handleChatRoomReportNotAccessibleExceptionException(
-            final InvalidChatRoomReportException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(AlreadyReportChatRoomException.class)
-    public ResponseEntity<ExceptionResponse> handleAlreadyReportChatRoomException(
-            final AlreadyReportChatRoomException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidTokenException(final InvalidTokenException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(UnsupportedSocialLoginException.class)
-    public ResponseEntity<ExceptionResponse> handleUnsupportedSocialLoginException(
-            final UnsupportedSocialLoginException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(UserUnauthorizedException.class)
-    public ResponseEntity<ExceptionResponse> handleUserUnauthorizedException(final UserUnauthorizedException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidSearchConditionException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidSearchConditionException(
-            final InvalidSearchConditionException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(NotificationFailedException.class)
-    public ResponseEntity<ExceptionResponse> handleNotificationFailedException(final NotificationFailedException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(DeviceTokenNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleDeviceTokenNotFoundException(final DeviceTokenNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(AlreadyReviewException.class)
-    public ResponseEntity<ExceptionResponse> handleAlreadyReviewException(
-            final AlreadyReviewException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(ReviewNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleReviewNotFoundException(
-            final ReviewNotFoundException ex
-    ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidAuctionToAskQuestionException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidAuctionToAskQuestionException(final InvalidAuctionToAskQuestionException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidQuestionerException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidQuestionerException(final InvalidQuestionerException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(QuestionNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleQuestionNotFoundException(final QuestionNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(AnswerNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleAnswerNotFoundException(final AnswerNotFoundException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidAnswererException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidAnswererException(final InvalidAnswererException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(InvalidQuestionReportException.class)
-    public ResponseEntity<ExceptionResponse> handleInvalidQuestionReportException(final InvalidQuestionReportException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(AlreadyAnsweredException.class)
-    public ResponseEntity<ExceptionResponse> handleAlreadyAnsweredException(final AlreadyAnsweredException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(AlreadyExistsNameException.class)
-    public ResponseEntity<ExceptionResponse> handleAlreadyExistsNameException(final AlreadyExistsNameException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
-    }
-
-    @ExceptionHandler(WithdrawalNotAllowedException.class)
-    public ResponseEntity<ExceptionResponse> handleWithdrawalNotAllowedException(final WithdrawalNotAllowedException ex) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body(new ExceptionResponse(ex.getMessage()));
     }
 
     @Override
@@ -472,9 +167,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()));
 
-        final String message = ex.getFieldErrors().get(0).getDefaultMessage();
+        final String message = ex.getFieldErrors()
+                                 .get(0)
+                                 .getDefaultMessage();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(new ExceptionResponse(message));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(
+            final Exception ex,
+            final Object body,
+            final HttpHeaders headers,
+            final HttpStatusCode statusCode,
+            final WebRequest request
+    ) {
+        logger.error(String.format(LOG_MESSAGE_FORMAT, ex.getClass().getSimpleName(), ex.getMessage()), ex);
+
+        return super.handleExceptionInternal(ex, body, headers, statusCode, request);
     }
 }
