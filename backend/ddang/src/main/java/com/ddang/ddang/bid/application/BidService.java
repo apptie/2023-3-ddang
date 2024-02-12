@@ -6,9 +6,11 @@ import com.ddang.ddang.auction.infrastructure.persistence.exception.AuctionNotFo
 import com.ddang.ddang.bid.application.dto.request.CreateBidDto;
 import com.ddang.ddang.bid.application.dto.response.ReadBidDto;
 import com.ddang.ddang.bid.application.event.BidNotificationEvent;
+import com.ddang.ddang.bid.application.exception.BiddingSellerException;
+import com.ddang.ddang.bid.application.exception.BiddingWinnerException;
 import com.ddang.ddang.bid.application.exception.InvalidAuctionToBidException;
-import com.ddang.ddang.bid.application.exception.InvalidBidPriceException;
-import com.ddang.ddang.bid.application.exception.InvalidBidderException;
+import com.ddang.ddang.bid.application.exception.LessThanPreviousBidException;
+import com.ddang.ddang.bid.application.exception.LessThanStartPriceException;
 import com.ddang.ddang.bid.domain.Bid;
 import com.ddang.ddang.bid.domain.BidPrice;
 import com.ddang.ddang.bid.domain.repository.BidRepository;
@@ -89,25 +91,25 @@ public class BidService {
 
     private void checkIsSeller(final Auction auction, final User bidder) {
         if (auction.isOwner(bidder)) {
-            throw new InvalidBidderException("판매자는 입찰할 수 없습니다");
+            throw new BiddingSellerException("판매자는 입찰할 수 없습니다");
         }
     }
 
     private void checkInvalidFirstBidPrice(final Auction auction, final BidPrice bidPrice) {
         if (auction.isInvalidFirstBidPrice(bidPrice)) {
-            throw new InvalidBidPriceException("입찰 금액이 잘못되었습니다");
+            throw new LessThanStartPriceException("시작 입찰가보다 낮은 금액을 입력했습니다.");
         }
     }
 
     private void checkIsNotLastBidder(final Bid lastBid, final User bidder) {
         if (lastBid.isSameBidder(bidder)) {
-            throw new InvalidBidderException("이미 최고 입찰자입니다");
+            throw new BiddingWinnerException("이미 최고 입찰자입니다");
         }
     }
 
     private void checkInvalidBidPrice(final Bid lastBid, final BidPrice bidPrice) {
         if (lastBid.isNextBidPriceGreaterThan(bidPrice)) {
-            throw new InvalidBidPriceException("가능 입찰액보다 낮은 금액을 입력했습니다");
+            throw new LessThanPreviousBidException("이전 입찰가보다 낮은 금액을 입력했습니다.");
         }
     }
 

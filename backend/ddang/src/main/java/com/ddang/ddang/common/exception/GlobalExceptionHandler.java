@@ -10,9 +10,12 @@ import com.ddang.ddang.authentication.application.exception.WithdrawalNotAllowed
 import com.ddang.ddang.authentication.configuration.exception.UserUnauthorizedException;
 import com.ddang.ddang.authentication.domain.exception.InvalidTokenException;
 import com.ddang.ddang.authentication.domain.exception.UnsupportedSocialLoginException;
+import com.ddang.ddang.bid.application.exception.BiddingSellerException;
+import com.ddang.ddang.bid.application.exception.BiddingWinnerException;
 import com.ddang.ddang.bid.application.exception.InvalidAuctionToBidException;
 import com.ddang.ddang.bid.application.exception.InvalidBidPriceException;
-import com.ddang.ddang.bid.application.exception.InvalidBidderException;
+import com.ddang.ddang.bid.application.exception.LessThanPreviousBidException;
+import com.ddang.ddang.bid.application.exception.LessThanStartPriceException;
 import com.ddang.ddang.category.infrastructure.exception.CategoryNotFoundException;
 import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException;
 import com.ddang.ddang.chat.application.exception.InvalidAuctionToChatException;
@@ -63,8 +66,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({
             InvalidAuctionToBidException.class,
-            InvalidBidderException.class,
+            BiddingSellerException.class,
+            BiddingWinnerException.class,
             InvalidBidPriceException.class,
+            LessThanStartPriceException.class,
+            LessThanPreviousBidException.class,
             InvalidPriceValueException.class,
             EmptyImageException.class,
             UnsupportedImageFileExtensionException.class,

@@ -9,9 +9,12 @@ import com.ddang.ddang.auction.infrastructure.persistence.exception.AuctionNotFo
 import com.ddang.ddang.bid.application.dto.request.CreateBidDto;
 import com.ddang.ddang.bid.application.dto.response.ReadBidDto;
 import com.ddang.ddang.bid.application.event.BidNotificationEvent;
+import com.ddang.ddang.bid.application.exception.BiddingSellerException;
+import com.ddang.ddang.bid.application.exception.BiddingWinnerException;
 import com.ddang.ddang.bid.application.exception.InvalidAuctionToBidException;
 import com.ddang.ddang.bid.application.exception.InvalidBidPriceException;
-import com.ddang.ddang.bid.application.exception.InvalidBidderException;
+import com.ddang.ddang.bid.application.exception.LessThanPreviousBidException;
+import com.ddang.ddang.bid.application.exception.LessThanStartPriceException;
 import com.ddang.ddang.bid.application.fixture.BidServiceFixture;
 import com.ddang.ddang.configuration.IsolateDatabase;
 import com.ddang.ddang.notification.application.NotificationService;
@@ -120,7 +123,7 @@ class BidServiceTest extends BidServiceFixture {
     void 판매자가_입찰하는_경우_예외가_발생한다() {
         // when && then
         assertThatThrownBy(() -> bidService.create(판매자가_본인_경매에_입찰_요청_dto, 이미지_절대_url))
-                .isInstanceOf(InvalidBidderException.class)
+                .isInstanceOf(BiddingSellerException.class)
                 .hasMessage("판매자는 입찰할 수 없습니다");
     }
 
@@ -128,32 +131,24 @@ class BidServiceTest extends BidServiceFixture {
     void 첫_입찰자가_시작가보다_낮은_금액으로_입찰하는_경우_예외가_발생한다() {
         // when && then
         assertThatThrownBy(() -> bidService.create(첫입찰시_시작가보다_낮은_입찰액으로_입찰_요청_dto, 이미지_절대_url))
-                .isInstanceOf(InvalidBidPriceException.class)
-                .hasMessage("입찰 금액이 잘못되었습니다");
+                .isInstanceOf(LessThanStartPriceException.class)
+                .hasMessage("시작 입찰가보다 낮은 금액을 입력했습니다.");
     }
 
     @Test
     void 마지막_입찰자가_연속으로_입찰하는_경우_예외가_발생한다() {
         // when && then
         assertThatThrownBy(() -> bidService.create(동일한_사용자가_입찰_요청_dto, 이미지_절대_url))
-                .isInstanceOf(InvalidBidderException.class)
+                .isInstanceOf(BiddingWinnerException.class)
                 .hasMessage("이미 최고 입찰자입니다");
     }
 
     @Test
-    void 마지막_입찰액보다_낮은_금액으로_입찰하는_경우_예외가_발생한다() {
-        // when & then
-        assertThatThrownBy(() -> bidService.create(이전_입찰액보다_낮은_입찰액으로_입찰_요청_dto, 이미지_절대_url))
-                .isInstanceOf(InvalidBidPriceException.class)
-                .hasMessage("가능 입찰액보다 낮은 금액을 입력했습니다");
-    }
-
-    @Test
-    void 최소_입찰_단위보다_낮은_금액으로_입찰하는_경우_예외가_발생한다() {
+    void 이전_입찰가보다_낮은_금액으로_입찰하는_경우_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> bidService.create(최소_입찰단위를_더한_금액보다_낮은_입찰액으로_입찰_요청_dto, 이미지_절대_url))
-                .isInstanceOf(InvalidBidPriceException.class)
-                .hasMessage("가능 입찰액보다 낮은 금액을 입력했습니다");
+                .isInstanceOf(LessThanPreviousBidException.class)
+                .hasMessage("이전 입찰가보다 낮은 금액을 입력했습니다.");
     }
 
     @ParameterizedTest

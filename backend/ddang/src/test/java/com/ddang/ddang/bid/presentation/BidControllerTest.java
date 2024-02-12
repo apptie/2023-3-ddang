@@ -26,9 +26,10 @@ import com.ddang.ddang.authentication.domain.TokenDecoder;
 import com.ddang.ddang.authentication.domain.TokenType;
 import com.ddang.ddang.authentication.configuration.AuthenticationStore;
 import com.ddang.ddang.bid.application.dto.request.CreateBidDto;
+import com.ddang.ddang.bid.application.exception.BiddingSellerException;
+import com.ddang.ddang.bid.application.exception.BiddingWinnerException;
 import com.ddang.ddang.bid.application.exception.InvalidAuctionToBidException;
 import com.ddang.ddang.bid.application.exception.InvalidBidPriceException;
-import com.ddang.ddang.bid.application.exception.InvalidBidderException;
 import com.ddang.ddang.bid.presentation.dto.request.CreateBidRequest;
 import com.ddang.ddang.bid.presentation.fixture.BidControllerFixture;
 import com.ddang.ddang.common.exception.GlobalExceptionHandler;
@@ -183,7 +184,7 @@ class BidControllerTest extends BidControllerFixture {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
         given(bidService.create(any(CreateBidDto.class), anyString()))
-                .willThrow(new InvalidBidderException("판매자는 입찰할 수 없습니다"));
+                .willThrow(new BiddingSellerException("판매자는 입찰할 수 없습니다"));
 
         // when & then
         mockMvc.perform(post("/bids")
@@ -220,7 +221,7 @@ class BidControllerTest extends BidControllerFixture {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
         given(bidService.create(any(CreateBidDto.class), anyString()))
-                .willThrow(new InvalidBidderException("이미 최고 입찰자입니다"));
+                .willThrow(new BiddingWinnerException("이미 최고 입찰자입니다"));
 
         // when & then
         mockMvc.perform(post("/bids")
