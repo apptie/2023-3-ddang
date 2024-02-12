@@ -75,28 +75,27 @@ public class ChatRoomReportRepositoryImplFixture {
         chatRoomRepository = new ChatRoomRepositoryImpl(jpaChatRoomRepository);
         chatRoomReportRepository = new ChatRoomReportRepositoryImpl(jpaChatRoomReportRepository);
 
-        final ProfileImage 프로필_이미지 = new ProfileImage("프로필.jpg", "프로필.jpg");
         final User 판매자 = User.builder()
                              .name("판매자")
-                             .profileImage(프로필_이미지)
+                             .profileImage(new ProfileImage("upload.png", "store.png"))
                              .reliability(new Reliability(4.7d))
                              .oauthId("12345")
                              .build();
         구매자1 = User.builder()
                    .name("구매자1")
-                   .profileImage(프로필_이미지)
+                   .profileImage(new ProfileImage("upload.png", "store.png"))
                    .reliability(new Reliability(4.7d))
                    .oauthId("12346")
                    .build();
         final User 구매자2겸_신고자 = User.builder()
                                    .name("구매자2")
-                                   .profileImage(프로필_이미지)
+                                   .profileImage(new ProfileImage("upload.png", "store.png"))
                                    .reliability(new Reliability(4.7d))
                                    .oauthId("12347")
                                    .build();
         final User 구매자3겸_신고자 = User.builder()
                                    .name("구매자3")
-                                   .profileImage(프로필_이미지)
+                                   .profileImage(new ProfileImage("upload.png", "store.png"))
                                    .reliability(new Reliability(4.7d))
                                    .oauthId("12348")
                                    .build();
@@ -145,7 +144,7 @@ public class ChatRoomReportRepositoryImplFixture {
         채팅방_신고2 = new ChatRoomReport(구매자2겸_신고자, 채팅방2, "신고합니다.");
         채팅방_신고3 = new ChatRoomReport(구매자3겸_신고자, 채팅방3, "신고합니다.");
 
-        profileImageRepository.save(프로필_이미지);
+        profileImageRepository.save(new ProfileImage("upload.png", "store.png"));
         userRepository.save(판매자);
         userRepository.save(구매자1);
         userRepository.save(구매자2겸_신고자);

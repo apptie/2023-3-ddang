@@ -32,7 +32,7 @@ class ReadMessageLogRepositoryImplTest extends ReadMessageLogRepositoryFixture {
     @Test
     void 마지막_읽은_메시지를_저장한다() {
         // given
-        final ReadMessageLog actual = readMessageLogRepository.saveAll(List.of(다섯_번째_메시지까지_읽은_메시지_로그)).get(0);
+        final ReadMessageLog actual = readMessageLogRepository.saveAll(List.of(메시지_로그)).get(0);
 
         // then
         assertThat(actual.getId()).isPositive();
@@ -42,7 +42,7 @@ class ReadMessageLogRepositoryImplTest extends ReadMessageLogRepositoryFixture {
     void 메시지_조회자_아이디와_채팅방_아이디에_해당하는_조회_메시지_로그를_반환한다() {
         // given
         final ReadMessageLog actual = readMessageLogRepository.getByReaderIdAndChatRoomIdOrThrow(
-                메리.getId(), 메리_엔초_채팅방.getId()
+                메리.getId(), 메리_엔초_채팅방_1.getId()
         );
 
         // then

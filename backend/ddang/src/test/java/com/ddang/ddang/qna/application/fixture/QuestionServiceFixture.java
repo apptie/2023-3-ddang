@@ -86,10 +86,9 @@ public class QuestionServiceFixture {
 
         categoryRepository.save(가구_카테고리);
 
-        final ProfileImage 프로필_이미지 = new ProfileImage("프로필.jpg", "프로필.jpg");
         final User 판매자 = User.builder()
                              .name("판매자")
-                             .profileImage(프로필_이미지)
+                             .profileImage(new ProfileImage("upload.png", "store.png"))
                              .reliability(new Reliability(4.7d))
                              .oauthId("12345")
                              .build();
@@ -132,19 +131,19 @@ public class QuestionServiceFixture {
         삭제된_경매.delete();
         질문자 = User.builder()
                   .name("질문자")
-                  .profileImage(프로필_이미지)
+                  .profileImage(new ProfileImage("upload.png", "store.png"))
                   .reliability(new Reliability(4.7d))
                   .oauthId("12346")
                   .build();
         질문하지_않은_사용자 = User.builder()
                           .name("사용자")
-                          .profileImage(프로필_이미지)
+                          .profileImage(new ProfileImage("upload.png", "store.png"))
                           .reliability(new Reliability(4.7d))
                           .oauthId("12346")
                           .build();
         두번째_질문을_작성한_사용자 = User.builder()
                               .name("두번째 질문자")
-                              .profileImage(프로필_이미지)
+                              .profileImage(new ProfileImage("upload.png", "store.png"))
                               .reliability(new Reliability(4.7d))
                               .oauthId("12347")
                               .build();

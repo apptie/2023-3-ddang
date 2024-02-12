@@ -59,15 +59,18 @@ public class ReadMessageLogRepositoryFixture {
 
     private ReadMessageLogRepositoryImpl readMessageLogRepository;
 
-    protected ChatRoom 메리_엔초_채팅방;
+    protected ChatRoom 메리_엔초_채팅방_1;
+    protected ChatRoom 메리_엔초_채팅방_2;
     protected User 메리;
     protected User 엔초;
     protected ReadMessageLog 다섯_번째_메시지까지_읽은_메시지_로그;
+    protected ReadMessageLog 메시지_로그;
     protected Message 다섯_번째_메시지;
 
     protected AuctionImage 메리의_경매_대표_이미지 = new AuctionImage("메리_경매_대표_이미지.png", "메리의_경매_대표_이미지.png");
     protected AuctionImage 메리의_대표_이미지가_아닌_경매_이미지 = new AuctionImage("메리의_대표 이미지가_아닌_경매_이미지.png", "메리의_대표 이미지가_아닌_경매_이미지.png");
-    protected ProfileImage 프로필_이미지 = new ProfileImage("upload.png", "store.png");
+    protected ProfileImage 프로필_이미지_1 = new ProfileImage("upload.png", "store.png");
+    protected ProfileImage 프로필_이미지_2 = new ProfileImage("upload.png", "store.png");
 
     @BeforeEach
     void fixtureSetUp(
@@ -93,20 +96,20 @@ public class ReadMessageLogRepositoryFixture {
 
         메리 = User.builder()
                  .name("메리_판매자")
-                 .profileImage(프로필_이미지)
+                 .profileImage(프로필_이미지_1)
                  .reliability(new Reliability(4.7d))
                  .oauthId("12345")
                  .build();
         엔초 = User.builder()
                  .name("엔초_구매자")
-                 .profileImage(프로필_이미지)
+                 .profileImage(프로필_이미지_2)
                  .reliability(new Reliability(4.7d))
                  .oauthId("14567")
                  .build();
         userRepository.save(메리);
         userRepository.save(엔초);
 
-        final Auction 판매자_메리_구매자_엔초_경매 = Auction.builder()
+        final Auction 판매자_메리_구매자_엔초_경매_1 = Auction.builder()
                                                 .seller(메리)
                                                 .title("메리 맥북")
                                                 .description("메리 맥북 팔아요")
@@ -115,21 +118,32 @@ public class ReadMessageLogRepositoryFixture {
                                                 .bidUnit(new BidUnit(1_000))
                                                 .closingTime(LocalDateTime.now())
                                                 .build();
-        판매자_메리_구매자_엔초_경매.addAuctionImages(List.of(메리의_경매_대표_이미지, 메리의_대표_이미지가_아닌_경매_이미지));
-        auctionRepository.save(판매자_메리_구매자_엔초_경매);
+        final Auction 판매자_메리_구매자_엔초_경매_2 = Auction.builder()
+                                                  .seller(메리)
+                                                  .title("메리 맥북")
+                                                  .description("메리 맥북 팔아요")
+                                                  .subCategory(전자기기_서브_노트북_카테고리)
+                                                  .startPrice(new Price(10_000))
+                                                  .bidUnit(new BidUnit(1_000))
+                                                  .closingTime(LocalDateTime.now())
+                                                  .build();
+        판매자_메리_구매자_엔초_경매_1.addAuctionImages(List.of(메리의_경매_대표_이미지, 메리의_대표_이미지가_아닌_경매_이미지));
+        auctionRepository.save(판매자_메리_구매자_엔초_경매_1);
+        auctionRepository.save(판매자_메리_구매자_엔초_경매_2);
 
-
-        final Bid 엔초가_메리_경매에_입찰 = new Bid(판매자_메리_구매자_엔초_경매, 엔초, new BidPrice(15_000));
+        final Bid 엔초가_메리_경매에_입찰 = new Bid(판매자_메리_구매자_엔초_경매_1, 엔초, new BidPrice(15_000));
         bidRepository.save(엔초가_메리_경매에_입찰);
 
-        판매자_메리_구매자_엔초_경매.updateLastBid(엔초가_메리_경매에_입찰);
-        메리_엔초_채팅방 = new ChatRoom(판매자_메리_구매자_엔초_경매, 엔초);
-        chatRoomRepository.save(메리_엔초_채팅방);
+        판매자_메리_구매자_엔초_경매_1.updateLastBid(엔초가_메리_경매에_입찰);
+        메리_엔초_채팅방_1 = new ChatRoom(판매자_메리_구매자_엔초_경매_1, 엔초);
+        메리_엔초_채팅방_2 = new ChatRoom(판매자_메리_구매자_엔초_경매_2, 엔초);
+        chatRoomRepository.save(메리_엔초_채팅방_1);
+        chatRoomRepository.save(메리_엔초_채팅방_2);
 
         List<Message> 메리_엔초_메시지들 = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             final Message 메시지 = Message.builder()
-                                       .chatRoom(메리_엔초_채팅방)
+                                       .chatRoom(메리_엔초_채팅방_1)
                                        .writer(메리)
                                        .receiver(엔초)
                                        .content("안녕하세요")
@@ -139,10 +153,11 @@ public class ReadMessageLogRepositoryFixture {
         }
 
         다섯_번째_메시지 = 메리_엔초_메시지들.get(4);
-        다섯_번째_메시지까지_읽은_메시지_로그 = new ReadMessageLog(메리_엔초_채팅방, 메리);
+        다섯_번째_메시지까지_읽은_메시지_로그 = new ReadMessageLog(메리_엔초_채팅방_1, 메리);
         다섯_번째_메시지까지_읽은_메시지_로그.updateLastReadMessage(다섯_번째_메시지.getId());
+        메시지_로그 = new ReadMessageLog(메리_엔초_채팅방_2, 엔초);
 
-        final ReadMessageLog 메리_엔초_채팅방의_메리_메시지_조회_로그 = new ReadMessageLog(메리_엔초_채팅방, 메리);
+        final ReadMessageLog 메리_엔초_채팅방의_메리_메시지_조회_로그 = new ReadMessageLog(메리_엔초_채팅방_1, 메리);
         메리_엔초_채팅방의_메리_메시지_조회_로그.updateLastReadMessage(다섯_번째_메시지.getId());
         readMessageLogRepository.saveAll(List.of(메리_엔초_채팅방의_메리_메시지_조회_로그));
     }

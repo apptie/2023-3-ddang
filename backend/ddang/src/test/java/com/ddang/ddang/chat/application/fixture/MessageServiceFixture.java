@@ -67,14 +67,30 @@ public class MessageServiceFixture {
         전자기기.addSubCategory(전자기기_하위_노트북);
         categoryRepository.save(전자기기);
 
-        final Auction 경매 = Auction.builder()
+        final Auction 경매_1 = Auction.builder()
                                   .title("경매")
                                   .description("description")
                                   .bidUnit(new BidUnit(1_000))
                                   .startPrice(new Price(10_000))
                                   .closingTime(LocalDateTime.now().plusDays(3L))
                                   .build();
-        auctionRepository.save(경매);
+        final Auction 경매_2 = Auction.builder()
+                                    .title("경매")
+                                    .description("description")
+                                    .bidUnit(new BidUnit(1_000))
+                                    .startPrice(new Price(10_000))
+                                    .closingTime(LocalDateTime.now().plusDays(3L))
+                                    .build();
+        final Auction 경매_3 = Auction.builder()
+                                    .title("경매")
+                                    .description("description")
+                                    .bidUnit(new BidUnit(1_000))
+                                    .startPrice(new Price(10_000))
+                                    .closingTime(LocalDateTime.now().plusDays(3L))
+                                    .build();
+        auctionRepository.save(경매_1);
+        auctionRepository.save(경매_2);
+        auctionRepository.save(경매_3);
 
         발신자 = User.builder()
                   .name("발신자")
@@ -99,9 +115,9 @@ public class MessageServiceFixture {
         userRepository.save(수신자);
         userRepository.save(탈퇴한_사용자);
 
-        final ChatRoom 채팅방 = new ChatRoom(경매, 발신자);
-        final ChatRoom 탈퇴한_사용자와의_채팅방 = new ChatRoom(경매, 탈퇴한_사용자);
-        메시지가_5개인_채팅방 = new ChatRoom(경매, 발신자);
+        final ChatRoom 채팅방 = new ChatRoom(경매_1, 발신자);
+        final ChatRoom 탈퇴한_사용자와의_채팅방 = new ChatRoom(경매_2, 탈퇴한_사용자);
+        메시지가_5개인_채팅방 = new ChatRoom(경매_3, 발신자);
 
         chatRoomRepository.save(채팅방);
         chatRoomRepository.save(탈퇴한_사용자와의_채팅방);

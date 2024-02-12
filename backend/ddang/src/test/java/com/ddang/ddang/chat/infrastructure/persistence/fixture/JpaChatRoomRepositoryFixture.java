@@ -47,7 +47,8 @@ public class JpaChatRoomRepositoryFixture {
 
     protected User 판매자;
     protected User 구매자;
-    protected Auction 경매;
+    protected Auction 경매_1;
+    protected Auction 경매_2;
     private Bid 입찰;
     protected ChatRoom 채팅방;
     protected Long 존재하지_않는_채팅방_아이디 = -999L;
@@ -56,46 +57,55 @@ public class JpaChatRoomRepositoryFixture {
     void setUp() {
         final Category 전자기기_카테고리 = new Category("전자기기");
         final Category 전자기기_서브_노트북_카테고리 = new Category("노트북 카테고리");
-        final ProfileImage 프로필_이미지 = new ProfileImage("upload.png", "store.png");
         final AuctionImage 경매이미지1 = new AuctionImage("경매이미지1.png", "경매이미지1.png");
         final AuctionImage 경매이미지2 = new AuctionImage("경매이미지2.png", "경매이미지2.png");
 
         판매자 = User.builder()
                    .name("판매자")
-                   .profileImage(프로필_이미지)
+                   .profileImage(new ProfileImage("upload.png", "store.png"))
                    .reliability(new Reliability(4.7d))
                    .oauthId("12345")
                    .build();
         구매자 = User.builder()
                    .name("구매자")
-                   .profileImage(프로필_이미지)
+                   .profileImage(new ProfileImage("upload.png", "store.png"))
                    .reliability(new Reliability(4.7d))
                    .oauthId("12346")
                    .build();
-        경매 = Auction.builder()
-                     .seller(판매자)
-                     .title("맥북")
-                     .description("맥북 팔아요")
-                     .subCategory(전자기기_서브_노트북_카테고리)
-                     .startPrice(new Price(10_000))
-                     .bidUnit(new BidUnit(1_000))
-                     .closingTime(LocalDateTime.now())
-                     .build();
+        경매_1 = Auction.builder()
+                      .seller(판매자)
+                      .title("맥북")
+                      .description("맥북 팔아요")
+                      .subCategory(전자기기_서브_노트북_카테고리)
+                      .startPrice(new Price(10_000))
+                      .bidUnit(new BidUnit(1_000))
+                      .closingTime(LocalDateTime.now())
+                      .build();
+        경매_2 = Auction.builder()
+                      .seller(판매자)
+                      .title("맥북")
+                      .description("맥북 팔아요")
+                      .subCategory(전자기기_서브_노트북_카테고리)
+                      .startPrice(new Price(10_000))
+                      .bidUnit(new BidUnit(1_000))
+                      .closingTime(LocalDateTime.now())
+                      .build();
 
-        입찰 = new Bid(경매, 구매자, new BidPrice(15_000));
+        입찰 = new Bid(경매_1, 구매자, new BidPrice(15_000));
 
-        채팅방 = new ChatRoom(경매, 구매자);
+        채팅방 = new ChatRoom(경매_1, 구매자);
 
         전자기기_카테고리.addSubCategory(전자기기_서브_노트북_카테고리);
         categoryRepository.save(전자기기_카테고리);
 
         userRepository.saveAll(List.of(판매자, 구매자));
 
-        경매.addAuctionImages(List.of(경매이미지1, 경매이미지2));
-        auctionRepository.save(경매);
+        경매_1.addAuctionImages(List.of(경매이미지1, 경매이미지2));
+        auctionRepository.save(경매_1);
+        auctionRepository.save(경매_2);
 
         bidRepository.save(입찰);
-        경매.updateLastBid(입찰);
+        경매_1.updateLastBid(입찰);
 
         chatRoomRepository.save(채팅방);
 

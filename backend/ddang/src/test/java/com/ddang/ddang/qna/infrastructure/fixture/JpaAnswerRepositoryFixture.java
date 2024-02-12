@@ -48,10 +48,9 @@ public class JpaAnswerRepositoryFixture {
 
     @BeforeEach
     void setUp() {
-        final ProfileImage 프로필_이미지 = new ProfileImage("프로필.jpg", "프로필.jpg");
         판매자 = User.builder()
                   .name("판매자")
-                  .profileImage(프로필_이미지)
+                  .profileImage(new ProfileImage("upload.png", "store.png"))
                   .reliability(new Reliability(4.7d))
                   .oauthId("12345")
                   .build();
@@ -65,7 +64,7 @@ public class JpaAnswerRepositoryFixture {
                                   .build();
         final User 질문자 = User.builder()
                              .name("질문자")
-                             .profileImage(프로필_이미지)
+                             .profileImage(new ProfileImage("upload.png", "store.png"))
                              .reliability(new Reliability(4.7d))
                              .oauthId("12346")
                              .build();
