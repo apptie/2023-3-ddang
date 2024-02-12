@@ -158,11 +158,11 @@ class BidServiceTest extends BidServiceFixture {
 
     @ParameterizedTest
     @MethodSource("provideBidRequestWithOutOfBoundBidPrice")
-    void 범위_밖의_금액으로_입찰하는_경우_예외가_발생한다(final CreateBidDto 범위_밖의_금액으로_입찰_요청_dto) {
+    void 범위_밖의_금액으로_입찰하는_경우_예외가_발생한다(final CreateBidDto dto) {
         // when & then
-        assertThatThrownBy(() -> bidService.create(범위_밖의_금액으로_입찰_요청_dto, 이미지_절대_url))
+        assertThatThrownBy(() -> bidService.create(dto, 이미지_절대_url))
                 .isInstanceOf(InvalidBidPriceException.class)
-                .hasMessage("입찰 금액이 잘못되었습니다");
+                .hasMessageContaining(String.valueOf(dto.bidPrice()));
     }
 
     private static Stream<CreateBidDto> provideBidRequestWithOutOfBoundBidPrice() {

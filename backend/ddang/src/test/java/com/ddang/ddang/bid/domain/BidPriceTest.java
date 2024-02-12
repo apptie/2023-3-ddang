@@ -1,13 +1,13 @@
 package com.ddang.ddang.bid.domain;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
 import com.ddang.ddang.bid.application.exception.InvalidBidPriceException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -26,7 +26,7 @@ class BidPriceTest {
 
         // when & then
         assertThatThrownBy(() -> new BidPrice(invalidPrice)).isInstanceOf(InvalidBidPriceException.class)
-                                                            .hasMessage("가격은 0원 이상이어야 합니다.");
+                                                            .hasMessageContaining(String.valueOf(invalidPrice));
     }
 
     @Test
@@ -36,7 +36,7 @@ class BidPriceTest {
 
         // when & then
         assertThatThrownBy(() -> new BidPrice(invalidPrice)).isInstanceOf(InvalidBidPriceException.class)
-                                                            .hasMessage("가격은 2100000000원 이하여야 합니다.");
+                                                            .hasMessageContaining(String.valueOf(invalidPrice));
     }
 
     @Test

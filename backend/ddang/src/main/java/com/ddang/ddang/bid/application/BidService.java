@@ -84,11 +84,7 @@ public class BidService {
     }
 
     private BidPrice processBidPrice(final int value) {
-        try {
-            return new BidPrice(value);
-        } catch (final InvalidBidPriceException ex) {
-            throw new InvalidBidPriceException("입찰 금액이 잘못되었습니다");
-        }
+        return new BidPrice(value);
     }
 
     private void checkIsSeller(final Auction auction, final User bidder) {
