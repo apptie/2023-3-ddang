@@ -21,7 +21,7 @@ import com.ddang.ddang.category.infrastructure.exception.CategoryNotFoundExcepti
 import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException;
 import com.ddang.ddang.chat.application.exception.UnavailableChatException;
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
-import com.ddang.ddang.chat.application.exception.UnableToChatException;
+import com.ddang.ddang.chat.application.exception.ChatToWithdrawalUser;
 import com.ddang.ddang.chat.infrastructure.exception.ChatRoomNotFoundException;
 import com.ddang.ddang.chat.infrastructure.exception.ReadMessageLogNotFoundException;
 import com.ddang.ddang.common.exception.dto.ExceptionResponse;
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             UnavailableChatException.class,
             UnsupportedSocialLoginException.class,
             AlreadyReviewException.class,
-            UnableToChatException.class,
+            ChatToWithdrawalUser.class,
             WithdrawalNotAllowedException.class,
             AlreadyExistsNameException.class,
             AlreadyAnsweredException.class,

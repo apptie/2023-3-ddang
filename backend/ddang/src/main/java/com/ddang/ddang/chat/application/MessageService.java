@@ -7,7 +7,7 @@ import com.ddang.ddang.chat.application.event.UpdateReadMessageLogEvent;
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
 import com.ddang.ddang.chat.application.exception.ReceiverNotFoundException;
 import com.ddang.ddang.chat.application.exception.SenderNotFoundException;
-import com.ddang.ddang.chat.application.exception.UnableToChatException;
+import com.ddang.ddang.chat.application.exception.ChatToWithdrawalUser;
 import com.ddang.ddang.chat.domain.ChatRoom;
 import com.ddang.ddang.chat.domain.Message;
 import com.ddang.ddang.chat.domain.repository.ChatRoomRepository;
@@ -43,7 +43,7 @@ public class MessageService {
                                                     "지정한 아이디에 대한 수신자를 찾을 수 없습니다."));
 
         if (!chatRoom.isChatAvailablePartner(receiver)) {
-            throw new UnableToChatException("탈퇴한 사용자에게는 메시지 전송이 불가능합니다.");
+            throw new ChatToWithdrawalUser("탈퇴한 사용자에게는 메시지 전송이 불가능합니다.");
         }
 
         final Message message = dto.toEntity(chatRoom, sender, receiver);

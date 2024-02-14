@@ -35,7 +35,7 @@ import com.ddang.ddang.chat.application.dto.request.CreateMessageDto;
 import com.ddang.ddang.chat.application.exception.UnavailableChatException;
 import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException;
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
-import com.ddang.ddang.chat.application.exception.UnableToChatException;
+import com.ddang.ddang.chat.application.exception.ChatToWithdrawalUser;
 import com.ddang.ddang.chat.infrastructure.exception.ChatRoomNotFoundException;
 import com.ddang.ddang.chat.application.dto.request.ReadMessageDto;
 import com.ddang.ddang.chat.presentation.dto.response.ReadMessageResponse;
@@ -151,7 +151,7 @@ class ChatRoomControllerTest extends ChatRoomControllerFixture {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
         given(messageService.create(any(CreateMessageDto.class), anyString())).willThrow(
-                new UnableToChatException("탈퇴한 사용자에게는 메시지 전송이 불가능합니다."));
+                new ChatToWithdrawalUser("탈퇴한 사용자에게는 메시지 전송이 불가능합니다."));
 
         // when & then
         mockMvc.perform(post("/chattings/{chatRoomId}/messages", 채팅방_아이디)
