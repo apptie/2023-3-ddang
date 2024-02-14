@@ -9,7 +9,7 @@ import com.ddang.ddang.chat.application.dto.response.ReadChatRoomDto;
 import com.ddang.ddang.chat.application.dto.response.ReadMultipleChatRoomDto;
 import com.ddang.ddang.chat.application.dto.response.ReadSingleChatRoomDto;
 import com.ddang.ddang.chat.application.event.CreateReadMessageLogEvent;
-import com.ddang.ddang.chat.application.exception.InvalidAuctionToChatException;
+import com.ddang.ddang.chat.application.exception.UnavailableChatException;
 import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException;
 import com.ddang.ddang.chat.domain.ChatRoom;
 import com.ddang.ddang.chat.domain.dto.MultipleChatRoomInfoDto;
@@ -69,7 +69,7 @@ public class ChatRoomService {
 
     private void checkAuctionStatus(final Auction findAuction) {
         if (!findAuction.isClosed(LocalDateTime.now())) {
-            throw new InvalidAuctionToChatException("경매가 아직 종료되지 않았습니다.");
+            throw new UnavailableChatException("채팅이 활성화되지 않았습니다.");
         }
     }
 

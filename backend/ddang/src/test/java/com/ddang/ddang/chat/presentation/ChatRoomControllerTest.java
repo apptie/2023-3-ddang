@@ -32,7 +32,7 @@ import com.ddang.ddang.authentication.domain.TokenType;
 import com.ddang.ddang.authentication.configuration.AuthenticationStore;
 import com.ddang.ddang.chat.application.dto.request.CreateChatRoomDto;
 import com.ddang.ddang.chat.application.dto.request.CreateMessageDto;
-import com.ddang.ddang.chat.application.exception.InvalidAuctionToChatException;
+import com.ddang.ddang.chat.application.exception.UnavailableChatException;
 import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException;
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
 import com.ddang.ddang.chat.application.exception.UnableToChatException;
@@ -442,7 +442,7 @@ class ChatRoomControllerTest extends ChatRoomControllerFixture {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
         given(chatRoomService.create(anyLong(), any(CreateChatRoomDto.class))).willThrow(
-                new InvalidAuctionToChatException("경매가 아직 종료되지 않았습니다."));
+                new UnavailableChatException("경매가 아직 종료되지 않았습니다."));
 
         // when & then
         mockMvc.perform(post("/chattings")

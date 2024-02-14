@@ -19,7 +19,7 @@ import com.ddang.ddang.bid.application.exception.LessThanPreviousBidException;
 import com.ddang.ddang.bid.application.exception.LessThanStartPriceException;
 import com.ddang.ddang.category.infrastructure.exception.CategoryNotFoundException;
 import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException;
-import com.ddang.ddang.chat.application.exception.InvalidAuctionToChatException;
+import com.ddang.ddang.chat.application.exception.UnavailableChatException;
 import com.ddang.ddang.chat.application.exception.MessageNotFoundException;
 import com.ddang.ddang.chat.application.exception.UnableToChatException;
 import com.ddang.ddang.chat.infrastructure.exception.ChatRoomNotFoundException;
@@ -76,7 +76,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             InvalidPriceValueException.class,
             EmptyImageException.class,
             UnsupportedImageFileExtensionException.class,
-            InvalidAuctionToChatException.class,
+            UnavailableChatException.class,
             UnsupportedSocialLoginException.class,
             AlreadyReviewException.class,
             UnableToChatException.class,
