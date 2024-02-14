@@ -2,6 +2,7 @@ package com.ddang.ddang.common.exception;
 
 import com.ddang.ddang.auction.application.exception.UserForbiddenException;
 import com.ddang.ddang.auction.configuration.exception.InvalidSearchConditionException;
+import com.ddang.ddang.auction.domain.exception.InvalidBidUnitException;
 import com.ddang.ddang.auction.domain.exception.InvalidPriceValueException;
 import com.ddang.ddang.auction.domain.exception.WinnerNotFoundException;
 import com.ddang.ddang.auction.infrastructure.persistence.exception.AuctionNotFoundException;
@@ -71,6 +72,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             InvalidBidPriceException.class,
             LessThanStartPriceException.class,
             LessThanPreviousBidException.class,
+            InvalidBidUnitException.class,
             InvalidPriceValueException.class,
             EmptyImageException.class,
             UnsupportedImageFileExtensionException.class,
