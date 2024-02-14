@@ -52,7 +52,7 @@ class QuestionReportServiceTest extends QuestionReportServiceFixture {
         // when & then
         assertThatThrownBy(() -> questionReportService.create(질문자가_본인_질문_신고_요청_dto))
                 .isInstanceOf(InvalidQuestionReportException.class)
-                .hasMessage("본인 질문입니다.");
+                .hasMessage("이미 신고한 질문이거나 자신의 질문입니다.");
     }
 
     @Test
@@ -60,7 +60,7 @@ class QuestionReportServiceTest extends QuestionReportServiceFixture {
         // when & then
         assertThatThrownBy(() -> questionReportService.create(이미_신고한_질문_신고_요청_dto))
                 .isInstanceOf(InvalidQuestionReportException.class)
-                .hasMessage("이미 신고한 질문입니다.");
+                .hasMessage("이미 신고한 질문이거나 자신의 질문입니다.");
     }
 
     @Test
