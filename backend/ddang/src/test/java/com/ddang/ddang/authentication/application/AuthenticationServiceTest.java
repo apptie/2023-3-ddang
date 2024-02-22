@@ -165,7 +165,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         // when & then
         assertThatThrownBy(() -> authenticationService.refreshToken(유효하지_않은_타입의_리프레시_토큰))
                 .isInstanceOf(InvalidTokenException.class)
-                .hasMessage("Bearer 타입이 아닙니다.");
+                .hasMessage("유효한 토큰이 아닙니다.");
     }
 
     @Test
