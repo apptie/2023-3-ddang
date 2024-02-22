@@ -77,7 +77,7 @@ public class QuestionService {
         final User user = userRepository.getByIdOrThrow(userId);
 
         if (!question.isWriter(user)) {
-            throw new UserForbiddenException("삭제할 권한이 없습니다.");
+            throw new UserForbiddenException("권한이 없습니다.");
         }
 
         question.delete();

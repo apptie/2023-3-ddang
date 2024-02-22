@@ -62,7 +62,7 @@ public class AnswerService {
         final User user = userRepository.getByIdOrThrow(userId);
 
         if (!answer.isWriter(user)) {
-            throw new UserForbiddenException("삭제할 권한이 없습니다.");
+            throw new UserForbiddenException("권한이 없습니다.");
         }
 
         answer.delete();

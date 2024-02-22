@@ -144,7 +144,7 @@ class QuestionServiceTest extends QuestionServiceFixture {
         // when & then
         assertThatThrownBy(() -> questionService.deleteById(질문.getId(), 질문하지_않은_사용자.getId()))
                 .isInstanceOf(UserForbiddenException.class)
-                .hasMessage("삭제할 권한이 없습니다.");
+                .hasMessage("권한이 없습니다.");
     }
 
     @Test

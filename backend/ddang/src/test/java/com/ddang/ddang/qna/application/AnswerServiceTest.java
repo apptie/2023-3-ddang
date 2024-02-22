@@ -112,7 +112,7 @@ class AnswerServiceTest extends AnswerServiceFixture {
         // when & then
         assertThatThrownBy(() -> answerService.deleteById(답변.getId(), 판매자가_아닌_사용자.getId()))
                 .isInstanceOf(UserForbiddenException.class)
-                .hasMessage("삭제할 권한이 없습니다.");
+                .hasMessage("권한이 없습니다.");
     }
 
     @Test
