@@ -34,7 +34,7 @@ public class UserServiceFixture {
         final String 이미_존재하는_사용자_이름 = "중복되는 이름";
         final User 이미_저장된_사용자 = User.builder()
                                     .name(이미_존재하는_사용자_이름)
-                                    .profileImage(프로필_이미지)
+                                    .profileImage(new ProfileImage("upload.png", "store.png"))
                                     .reliability(new Reliability(4.7d))
                                     .oauthId("12345")
                                     .build();

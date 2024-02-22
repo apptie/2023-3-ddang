@@ -24,7 +24,7 @@ class JwtDecoderTest extends JwtDecoderFixture {
         // when & then
         assertThatThrownBy(() -> jwtDecoder.decode(TokenType.ACCESS, 유효하지_않은_길이의_토큰))
                 .isInstanceOf(InvalidTokenException.class)
-                .hasMessage("Bearer 타입이 아니거나 유효한 토큰이 아닙니다.");
+                .hasMessage("유효한 토큰이 아닙니다.");
     }
 
     @Test
@@ -35,7 +35,7 @@ class JwtDecoderTest extends JwtDecoderFixture {
         // when & then
         assertThatThrownBy(() -> jwtDecoder.decode(TokenType.ACCESS, 유효하지_않은_타입의_토큰))
                 .isInstanceOf(InvalidTokenException.class)
-                .hasMessage("Bearer 타입이 아닙니다.");
+                .hasMessage("유효한 토큰이 아닙니다.");
     }
 
     @Test

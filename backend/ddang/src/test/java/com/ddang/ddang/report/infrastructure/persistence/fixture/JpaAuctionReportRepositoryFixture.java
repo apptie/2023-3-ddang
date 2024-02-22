@@ -58,28 +58,27 @@ public class JpaAuctionReportRepositoryFixture {
 
     @BeforeEach
     void setUp() {
-        final ProfileImage 프로필_이미지 = new ProfileImage("프로필.jpg", "프로필.jpg");
         판매자 = User.builder()
                   .name("판매자")
-                  .profileImage(프로필_이미지)
+                  .profileImage(new ProfileImage("upload.png", "store.png"))
                   .reliability(new Reliability(4.7d))
                   .oauthId("12345")
                   .build();
         신고자1 = User.builder()
                    .name("신고자1")
-                   .profileImage(프로필_이미지)
+                   .profileImage(new ProfileImage("upload.png", "store.png"))
                    .reliability(new Reliability(4.7d))
                    .oauthId("12346")
                    .build();
         final User 신고자2 = User.builder()
                               .name("신고자2")
-                              .profileImage(프로필_이미지)
+                              .profileImage(new ProfileImage("upload.png", "store.png"))
                               .reliability(new Reliability(4.7d))
                               .oauthId("12347")
                               .build();
         final User 신고자3 = User.builder()
                               .name("신고자3")
-                              .profileImage(프로필_이미지)
+                              .profileImage(new ProfileImage("upload.png", "store.png"))
                               .reliability(new Reliability(4.7d))
                               .oauthId("12348")
                               .build();
@@ -104,7 +103,7 @@ public class JpaAuctionReportRepositoryFixture {
         경매_신고3 = new AuctionReport(신고자3, 경매, "신고합니다");
 
 
-        profileImageRepository.save(프로필_이미지);
+        profileImageRepository.save(new ProfileImage("upload.png", "store.png"));
         userRepository.saveAll(List.of(판매자, 신고자1, 신고자2, 신고자3));
 
         categoryRepository.saveAll(List.of(전자기기_카테고리, 전자기기_서브_노트북_카테고리));

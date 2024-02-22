@@ -3,8 +3,8 @@ package com.ddang.ddang.category.application;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.ddang.ddang.category.application.dto.response.ReadCategoryDto;
-import com.ddang.ddang.category.infrastructure.exception.CategoryNotFoundException;
 import com.ddang.ddang.category.application.fixture.CategoryServiceFixture;
+import com.ddang.ddang.category.infrastructure.exception.UninitializedCategoryException;
 import com.ddang.ddang.configuration.IsolateDatabase;
 import java.util.List;
 import org.assertj.core.api.SoftAssertions;
@@ -55,7 +55,6 @@ class CategoryServiceTest extends CategoryServiceFixture {
     void 지정한_메인_카테고리에_해당하는_서브_카테고리가_없는_경우_서브_카테고리_조회시_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> categoryService.readAllSubByMainId(전자기기_카테고리.getId()))
-                .isInstanceOf(CategoryNotFoundException.class)
-                .hasMessage("지정한 메인 카테고리에 해당하는 서브 카테고리가 없습니다.");
+                .isInstanceOf(UninitializedCategoryException.class);
     }
 }

@@ -60,34 +60,33 @@ public class AuctionReportServiceFixture {
         final Long 존재하지_않는_사용자_아이디 = -9999L;
         final Long 존재하지_않는_경매_아이디 = -9999L;
 
-        final ProfileImage 프로필_이미지 = new ProfileImage("프로필.jpg", "프로필.jpg");
         final User 판매자 = User.builder()
                              .name("판매자")
-                             .profileImage(프로필_이미지)
+                             .profileImage(new ProfileImage("upload.png", "store.png"))
                              .reliability(new Reliability(4.7d))
                              .oauthId("12345")
                              .build();
         final User 새로운_신고자 = User.builder()
                                  .name("새로운_신고자")
-                                 .profileImage(프로필_이미지)
+                                 .profileImage(new ProfileImage("upload.png", "store.png"))
                                  .reliability(new Reliability(4.7d))
                                  .oauthId("12346")
                                  .build();
         이미_신고한_신고자1 = User.builder()
                           .name("신고자1")
-                          .profileImage(프로필_이미지)
+                          .profileImage(new ProfileImage("upload.png", "store.png"))
                           .reliability(new Reliability(4.7d))
                           .oauthId("12347")
                           .build();
         이미_신고한_신고자2 = User.builder()
                           .name("신고자2")
-                          .profileImage(프로필_이미지)
+                          .profileImage(new ProfileImage("upload.png", "store.png"))
                           .reliability(new Reliability(4.7d))
                           .oauthId("12348")
                           .build();
         이미_신고한_신고자3 = User.builder()
                           .name("신고자3")
-                          .profileImage(프로필_이미지)
+                          .profileImage(new ProfileImage("upload.png", "store.png"))
                           .reliability(new Reliability(4.7d))
                           .oauthId("12349")
                           .build();
@@ -123,7 +122,7 @@ public class AuctionReportServiceFixture {
         final AuctionReport 경매_신고2 = new AuctionReport(이미_신고한_신고자2, 경매, "신고합니다");
         final AuctionReport 경매_신고3 = new AuctionReport(이미_신고한_신고자3, 경매, "신고합니다");
 
-        profileImageRepository.save(프로필_이미지);
+        profileImageRepository.save(new ProfileImage("upload.png", "store.png"));
 
         userRepository.save(판매자);
         userRepository.save(새로운_신고자);

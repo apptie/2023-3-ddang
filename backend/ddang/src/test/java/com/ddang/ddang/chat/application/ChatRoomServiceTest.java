@@ -10,7 +10,7 @@ import com.ddang.ddang.chat.application.dto.response.ReadMultipleChatRoomDto;
 import com.ddang.ddang.chat.application.dto.response.ReadSingleChatRoomDto;
 import com.ddang.ddang.chat.application.event.CreateReadMessageLogEvent;
 import com.ddang.ddang.chat.infrastructure.exception.ChatRoomNotFoundException;
-import com.ddang.ddang.chat.application.exception.InvalidAuctionToChatException;
+import com.ddang.ddang.chat.application.exception.UnavailableChatException;
 import com.ddang.ddang.chat.application.exception.ForbiddenChattingUserException;
 import com.ddang.ddang.chat.application.fixture.ChatRoomServiceFixture;
 import com.ddang.ddang.chat.domain.repository.MessageRepository;
@@ -81,8 +81,8 @@ class ChatRoomServiceTest extends ChatRoomServiceFixture {
     void 경매가_종료되지_않은_상태에서_채팅방을_생성하면_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> chatRoomService.create(판매자.getId(), 경매가_진행중이라서_채팅방을_생성할_수_없는_DTO))
-                .isInstanceOf(InvalidAuctionToChatException.class)
-                .hasMessage("경매가 아직 종료되지 않았습니다.");
+                .isInstanceOf(UnavailableChatException.class)
+                .hasMessage("채팅이 활성화되지 않았습니다.");
     }
 
     @Test
@@ -98,7 +98,7 @@ class ChatRoomServiceTest extends ChatRoomServiceFixture {
         // when & then
         assertThatThrownBy(() -> chatRoomService.create(경매에_참여한_적_없는_사용자.getId(), 채팅방_생성을_위한_DTO))
                 .isInstanceOf(ForbiddenChattingUserException.class)
-                .hasMessage("경매의 판매자 또는 최종 낙찰자만 채팅이 가능합니다.");
+                .hasMessage("해당 경매 채팅 대상자가 아닙니다.");
     }
 
     @Test
@@ -173,7 +173,7 @@ class ChatRoomServiceTest extends ChatRoomServiceFixture {
         // when & then
         assertThatThrownBy(() -> chatRoomService.readByChatRoomId(엔초_지토_채팅방.getId(), 제이미.getId()))
                 .isInstanceOf(ForbiddenChattingUserException.class)
-                .hasMessageContaining("해당 채팅방에 접근할 권한이 없습니다.");
+                .hasMessageContaining("해당 경매 채팅 대상자가 아닙니다.");
     }
 
     @Test

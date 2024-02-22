@@ -2,6 +2,7 @@ package com.ddang.ddang.review.presentation.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import javax.annotation.Nullable;
 
 public record CreateReviewRequest(
 
@@ -13,10 +14,10 @@ public record CreateReviewRequest(
         @Positive(message = "사용자 아이디는 양수여야 합니다.")
         Long targetId,
 
+        @Nullable
         String content,
 
-        @NotNull(message = "점수가 입력되지 않았습니다.")
         @Positive(message = "점수는 양수여야 합니다.")
-        Float score
+        float score
 ) {
 }

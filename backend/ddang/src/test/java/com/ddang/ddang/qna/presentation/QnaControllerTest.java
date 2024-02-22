@@ -30,7 +30,7 @@ import com.ddang.ddang.authentication.configuration.AuthenticationPrincipalArgum
 import com.ddang.ddang.authentication.domain.TokenDecoder;
 import com.ddang.ddang.authentication.domain.TokenType;
 import com.ddang.ddang.authentication.configuration.AuthenticationStore;
-import com.ddang.ddang.exception.GlobalExceptionHandler;
+import com.ddang.ddang.common.exception.GlobalExceptionHandler;
 import com.ddang.ddang.qna.application.dto.request.CreateAnswerDto;
 import com.ddang.ddang.qna.application.dto.request.CreateQuestionDto;
 import com.ddang.ddang.qna.application.exception.AlreadyAnsweredException;
@@ -467,7 +467,7 @@ class QnaControllerTest extends QnaControllerFixture {
     }
 
     @Test
-    void 작성자가_아닌_사용자가_질문_삭제시_401을_반환한다() throws Exception {
+    void 작성자가_아닌_사용자가_질문_삭제시_403을_반환한다() throws Exception {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
         willThrow(new UserForbiddenException("삭제할 권한이 없습니다."))
@@ -478,7 +478,7 @@ class QnaControllerTest extends QnaControllerFixture {
                        .header(HttpHeaders.AUTHORIZATION, 액세스_토큰_값)
                )
                .andExpectAll(
-                       status().isUnauthorized(),
+                       status().isForbidden(),
                        jsonPath("$.message").exists()
                );
     }
@@ -536,7 +536,7 @@ class QnaControllerTest extends QnaControllerFixture {
     }
 
     @Test
-    void 작성자가_아닌_사용자가_답변_삭제시_401을_반환한다() throws Exception {
+    void 작성자가_아닌_사용자가_답변_삭제시_403을_반환한다() throws Exception {
         // given
         given(tokenDecoder.decode(eq(TokenType.ACCESS), anyString())).willReturn(Optional.of(사용자_ID_클레임));
         willThrow(new UserForbiddenException("삭제할 권한이 없습니다."))
@@ -547,7 +547,7 @@ class QnaControllerTest extends QnaControllerFixture {
                        .header(HttpHeaders.AUTHORIZATION, 액세스_토큰_값)
                )
                .andExpectAll(
-                       status().isUnauthorized(),
+                       status().isForbidden(),
                        jsonPath("$.message").exists()
                );
     }

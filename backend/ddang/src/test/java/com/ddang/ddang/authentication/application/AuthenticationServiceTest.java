@@ -88,7 +88,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         final LoginInfoDto actual = authenticationService.login(
                 가입하지_않은_사용자_회원_정보.findUserId(),
                 지원하는_소셜_로그인_타입,
-                디바이스_토큰
+                로그인_요청_디바이스_토큰_정보
         );
 
         // then
@@ -108,7 +108,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         final LoginInfoDto actual = authenticationService.login(
                 가입한_사용자_회원_정보.findUserId(),
                 지원하는_소셜_로그인_타입,
-                디바이스_토큰
+                로그인_요청_디바이스_토큰_정보
         );
 
         // then
@@ -129,7 +129,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         final LoginInfoDto actual = authenticationService.login(
                 가입하지_않은_사용자_회원_정보.findUserId(),
                 지원하는_소셜_로그인_타입,
-                디바이스_토큰
+                로그인_요청_디바이스_토큰_정보
         );
 
         // then
@@ -165,7 +165,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         // when & then
         assertThatThrownBy(() -> authenticationService.refreshToken(유효하지_않은_타입의_리프레시_토큰))
                 .isInstanceOf(InvalidTokenException.class)
-                .hasMessage("Bearer 타입이 아닙니다.");
+                .hasMessage("유효한 토큰이 아닙니다.");
     }
 
     @Test
@@ -246,7 +246,7 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         assertThatThrownBy(
                 () -> authenticationService.withdrawal(현재_진행중인_경매가_있는_사용자_액세스_토큰, 현재_진행중인_경매가_있는_사용자_리프래시_토큰))
                 .isInstanceOf(WithdrawalNotAllowedException.class)
-                .hasMessage("등록한 경매 중 현재 진행 중인 것이 있기에 탈퇴할 수 없습니다.");
+                .hasMessage("진행 중인 경매가 있기 때문에 탈퇴할 수 없습니다.");
     }
 
     @Test
@@ -259,6 +259,6 @@ class AuthenticationServiceTest extends AuthenticationServiceFixture {
         assertThatThrownBy(() -> authenticationService.withdrawal(현재_진행중인_경매의_마지막_입찰자인_사용자_액세스_토큰,
                 현재_진행중인_경매의_마지막_입찰자인_사용자_리프래시_토큰))
                 .isInstanceOf(WithdrawalNotAllowedException.class)
-                .hasMessage("마지막 입찰자로 등록되어 있는 것이 있기에 탈퇴할 수 없습니다.");
+                .hasMessage("진행 중인 경매가 있기 때문에 탈퇴할 수 없습니다.");
     }
 }

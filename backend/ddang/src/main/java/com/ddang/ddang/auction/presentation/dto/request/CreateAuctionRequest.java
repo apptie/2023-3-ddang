@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.annotation.Nullable;
 
 public record CreateAuctionRequest(
         @NotEmpty(message = "제목이 입력되지 않았습니다.")
@@ -32,6 +33,7 @@ public record CreateAuctionRequest(
         @Positive(message = "잘못된 카테고리 입니다.")
         Long subCategoryId,
 
+        @Nullable
         List<Long> thirdRegionIds
 ) {
 }

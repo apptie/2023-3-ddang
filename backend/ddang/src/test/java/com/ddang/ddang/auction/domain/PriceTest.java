@@ -24,7 +24,8 @@ class PriceTest extends PriceFixture {
         // when & then
         assertThatThrownBy(() -> new Price(최소_금액보다_낮은_가격))
                 .isInstanceOf(InvalidPriceValueException.class)
-                .hasMessage("가격은 0원 이상이어야 합니다.");
+                .hasMessageContaining("이상")
+                .hasMessageContaining("이하");
     }
 
     @Test
@@ -32,6 +33,7 @@ class PriceTest extends PriceFixture {
         // when & then
         assertThatThrownBy(() -> new Price(최대_금액보다_높은_가격))
                 .isInstanceOf(InvalidPriceValueException.class)
-                .hasMessage("가격은 2100000000원 이하여야 합니다.");
+                .hasMessageContaining("이상")
+                .hasMessageContaining("이하");
     }
 }

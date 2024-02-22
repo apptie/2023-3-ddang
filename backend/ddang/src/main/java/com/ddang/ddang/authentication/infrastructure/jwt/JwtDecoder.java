@@ -37,13 +37,13 @@ public class JwtDecoder implements TokenDecoder {
 
             validateTokenType(tokenType);
         } catch (final StringIndexOutOfBoundsException | NullPointerException ex) {
-            throw new InvalidTokenException("Bearer 타입이 아니거나 유효한 토큰이 아닙니다.", ex);
+            throw new InvalidTokenException("유효한 토큰이 아닙니다.", ex);
         }
     }
 
     private void validateTokenType(final String tokenType) {
         if (!BEARER_TOKEN_PREFIX.equals(tokenType)) {
-            throw new InvalidTokenException("Bearer 타입이 아닙니다.");
+            throw new InvalidTokenException("유효한 토큰이 아닙니다.");
         }
     }
 

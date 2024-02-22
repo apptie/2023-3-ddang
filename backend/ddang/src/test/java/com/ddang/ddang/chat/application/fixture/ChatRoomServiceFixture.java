@@ -95,7 +95,6 @@ public class ChatRoomServiceFixture {
         전자기기_카테고리.addSubCategory(전자기기_서브_노트북_카테고리);
         categoryRepository.save(전자기기_카테고리);
 
-        final ProfileImage 프로필_이미지 = new ProfileImage("upload.png", "store.png");
         final AuctionImage 경매_대표_이미지 = new AuctionImage("경매_대표_이미지.png", "경매_대표_이미지.png");
         final AuctionImage 대표_이미지가_아닌_경매_이미지 =
                 new AuctionImage("대표 이미지가_아닌_경매_이미지.png", "대표 이미지가_아닌_경매_이미지.png");
@@ -108,49 +107,49 @@ public class ChatRoomServiceFixture {
 
         판매자 = User.builder()
                   .name("판매자")
-                  .profileImage(프로필_이미지)
+                  .profileImage(new ProfileImage("upload.png", "store.png"))
                   .reliability(new Reliability(4.7d))
                   .oauthId("12345")
                   .build();
         구매자 = User.builder()
                   .name("구매자")
-                  .profileImage(프로필_이미지)
+                  .profileImage(new ProfileImage("upload.png", "store.png"))
                   .reliability(new Reliability(4.7d))
                   .oauthId("12346")
                   .build();
         엔초 = User.builder()
                  .name("엔초")
-                 .profileImage(프로필_이미지)
+                 .profileImage(new ProfileImage("upload.png", "store.png"))
                  .reliability(new Reliability(4.7d))
                  .oauthId("12347")
                  .build();
         제이미 = User.builder()
                   .name("제이미")
-                  .profileImage(프로필_이미지)
+                  .profileImage(new ProfileImage("upload.png", "store.png"))
                   .reliability(new Reliability(4.7d))
                   .oauthId("12348")
                   .build();
         지토 = User.builder()
                  .name("지토")
-                 .profileImage(프로필_이미지)
+                 .profileImage(new ProfileImage("upload.png", "store.png"))
                  .reliability(new Reliability(4.7d))
                  .oauthId("12349")
                  .build();
         경매에_참여한_적_없는_사용자 = User.builder()
                                .name("외부인")
-                               .profileImage(프로필_이미지)
+                               .profileImage(new ProfileImage("upload.png", "store.png"))
                                .reliability(new Reliability(4.7d))
                                .oauthId("12340")
                                .build();
         채팅방을_생성하는_메리 = User.builder()
                            .name("채팅방을_생성하는_메리")
-                           .profileImage(프로필_이미지)
+                           .profileImage(new ProfileImage("upload.png", "store.png"))
                            .reliability(new Reliability(4.7d))
                            .oauthId("09876")
                            .build();
         메리_경매_낙찰자_지토 = User.builder()
                            .name("메리_경매_낙찰자_지토")
-                           .profileImage(프로필_이미지)
+                           .profileImage(new ProfileImage("upload.png", "store.png"))
                            .reliability(new Reliability(4.7d))
                            .oauthId("10293")
                            .build();

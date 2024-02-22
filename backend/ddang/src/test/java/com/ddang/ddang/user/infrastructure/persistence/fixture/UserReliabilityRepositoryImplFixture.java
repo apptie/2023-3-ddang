@@ -19,7 +19,8 @@ public class UserReliabilityRepositoryImplFixture {
     private UserRepository userRepository;
     private UserReliabilityRepository userReliabilityRepository;
 
-    protected User 사용자;
+    protected User 사용자_1;
+    protected User 사용자_2;
     protected UserReliability 저장하기_전_사용자_신뢰도_엔티티;
     protected UserReliability 사용자_신뢰도_정보;
 
@@ -31,17 +32,24 @@ public class UserReliabilityRepositoryImplFixture {
         userRepository = new UserRepositoryImpl(jpaUserRepository);
         userReliabilityRepository = new UserReliabilityRepositoryImpl(jpaUserReliabilityRepository);
 
-        사용자 = User.builder()
-                  .name("사용자")
-                  .profileImage(new ProfileImage("uplad.png", "store.png"))
-                  .reliability(Reliability.INITIAL_RELIABILITY)
-                  .oauthId("12345")
-                  .build();
-        userRepository.save(사용자);
+        사용자_1 = User.builder()
+                    .name("사용자1")
+                    .profileImage(new ProfileImage("uplad.png", "store.png"))
+                    .reliability(Reliability.INITIAL_RELIABILITY)
+                    .oauthId("12345")
+                    .build();
+        사용자_2 = User.builder()
+                    .name("사용자2")
+                    .profileImage(new ProfileImage("uplad.png", "store.png"))
+                    .reliability(Reliability.INITIAL_RELIABILITY)
+                    .oauthId("54321")
+                    .build();
+        userRepository.save(사용자_1);
+        userRepository.save(사용자_2);
 
-        저장하기_전_사용자_신뢰도_엔티티 = new UserReliability(사용자);
+        저장하기_전_사용자_신뢰도_엔티티 = new UserReliability(사용자_1);
 
-        사용자_신뢰도_정보 = new UserReliability(사용자);
+        사용자_신뢰도_정보 = new UserReliability(사용자_2);
         userReliabilityRepository.save(사용자_신뢰도_정보);
     }
 }

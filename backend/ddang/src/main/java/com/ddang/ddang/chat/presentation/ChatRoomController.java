@@ -7,11 +7,11 @@ import com.ddang.ddang.chat.application.MessageService;
 import com.ddang.ddang.chat.application.dto.request.CreateChatRoomDto;
 import com.ddang.ddang.chat.application.dto.request.CreateMessageDto;
 import com.ddang.ddang.chat.application.dto.response.ReadMultipleChatRoomDto;
-import com.ddang.ddang.chat.application.dto.response.ReadMessageDto;
+import com.ddang.ddang.chat.application.dto.response.ReadMultipleMessageDto;
 import com.ddang.ddang.chat.application.dto.response.ReadSingleChatRoomDto;
 import com.ddang.ddang.chat.presentation.dto.request.CreateChatRoomRequest;
 import com.ddang.ddang.chat.presentation.dto.request.CreateMessageRequest;
-import com.ddang.ddang.chat.presentation.dto.request.ReadMessageRequest;
+import com.ddang.ddang.chat.application.dto.request.ReadMessageDto;
 import com.ddang.ddang.chat.presentation.dto.response.CreateChatRoomResponse;
 import com.ddang.ddang.chat.presentation.dto.response.CreateMessageResponse;
 import com.ddang.ddang.chat.presentation.dto.response.ReadSingleChatRoomResponse;
@@ -58,14 +58,15 @@ public class ChatRoomController {
     public ResponseEntity<List<ReadMultipleChatRoomResponse>> readAllParticipatingChatRooms(
             @AuthenticateUser final AuthenticationUserInfo userInfo
     ) {
-        final List<ReadMultipleChatRoomDto> readMultipleChatRoomDtos = chatRoomService.readAllByUserId(userInfo.userId());
+        final List<ReadMultipleChatRoomDto> readMultipleChatRoomDtos = chatRoomService.readAllByUserId(
+                userInfo.userId());
         final List<ReadMultipleChatRoomResponse> responses =
                 readMultipleChatRoomDtos.stream()
                                         .map(dto -> ReadMultipleChatRoomResponse.of(
-                                                     dto,
-                                                     urlFinder.find(ImageTargetType.PROFILE_IMAGE),
-                                                     urlFinder.find(ImageTargetType.AUCTION_IMAGE)
-                                             ))
+                                                dto,
+                                                urlFinder.find(ImageTargetType.PROFILE_IMAGE),
+                                                urlFinder.find(ImageTargetType.AUCTION_IMAGE)
+                                        ))
                                         .toList();
 
         return ResponseEntity.ok(responses);
@@ -112,26 +113,21 @@ public class ChatRoomController {
             @PathVariable final Long chatRoomId,
             @RequestParam(required = false) final Long lastMessageId
     ) {
-        final ReadMessageRequest readMessageRequest = new ReadMessageRequest(
+        final ReadMessageDto readMessageDto = new ReadMessageDto(
                 userInfo.userId(),
                 chatRoomId,
                 lastMessageId
         );
-        final List<ReadMessageDto> readMessageDtos = messageService.readAllByLastMessageId(readMessageRequest);
-        final List<ReadMessageResponse> responses = readMessageDtos.stream()
-                                                                   .map(readMessageDto -> ReadMessageResponse.of(
-                                                                           readMessageDto,
-                                                                           isMessageOwner(
-                                                                                   readMessageDto,
-                                                                                   userInfo
-                                                                           )
-                                                                   ))
-                                                                   .toList();
-        return ResponseEntity.ok(responses);
-    }
+        final List<ReadMultipleMessageDto> readMultipleMessageDtos = messageService.readAllByLastMessageId(
+                readMessageDto
+        );
+        final List<ReadMessageResponse> responses =
+                readMultipleMessageDtos.stream()
+                                       .map(
+                                               dto -> ReadMessageResponse.of(dto, userInfo)
+                                       )
+                                       .toList();
 
-    private boolean isMessageOwner(final ReadMessageDto readMessageDto, final AuthenticationUserInfo userInfo) {
-        return readMessageDto.writerId()
-                             .equals(userInfo.userId());
+        return ResponseEntity.ok(responses);
     }
 }

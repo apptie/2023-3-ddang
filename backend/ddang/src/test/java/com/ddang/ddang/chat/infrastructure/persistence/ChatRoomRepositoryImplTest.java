@@ -33,7 +33,7 @@ class ChatRoomRepositoryImplTest extends ChatRoomRepositoryImplFixture {
     @Test
     void 채팅방을_저장한다() {
         // given
-        final ChatRoom chatRoom = new ChatRoom(경매, 구매자);
+        final ChatRoom chatRoom = new ChatRoom(경매_2, 구매자);
 
         // when
         chatRoomRepository.save(chatRoom);
@@ -67,7 +67,7 @@ class ChatRoomRepositoryImplTest extends ChatRoomRepositoryImplFixture {
     @Test
     void 지정한_경매_아이디가_포함된_채팅방의_아이디를_조회한다() {
         // when
-        final Optional<Long> actual = chatRoomRepository.findChatRoomIdByAuctionId(경매.getId());
+        final Optional<Long> actual = chatRoomRepository.findChatRoomIdByAuctionId(경매_1.getId());
 
         // then
         assertThat(actual).contains(채팅방.getId());
@@ -76,7 +76,7 @@ class ChatRoomRepositoryImplTest extends ChatRoomRepositoryImplFixture {
     @Test
     void 지정한_경매_아이디가_포함된_채팅방이_존재한다면_참을_반환한다() {
         // when
-        final boolean actual = chatRoomRepository.existsByAuctionId(경매.getId());
+        final boolean actual = chatRoomRepository.existsByAuctionId(경매_1.getId());
 
         // then
         assertThat(actual).isTrue();

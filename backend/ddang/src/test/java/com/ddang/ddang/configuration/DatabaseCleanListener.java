@@ -11,7 +11,7 @@ import org.springframework.test.context.support.AbstractTestExecutionListener;
 public class DatabaseCleanListener extends AbstractTestExecutionListener {
 
     @Override
-    public void afterTestMethod(final TestContext testContext) {
+    public void beforeTestMethod(final TestContext testContext) {
         final EntityManager em = findEntityManager(testContext);
         final List<String> tableNames = calculateTableNames(em);
 

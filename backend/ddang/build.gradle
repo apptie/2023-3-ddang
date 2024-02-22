@@ -9,8 +9,8 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.0.8'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot' version '3.2.2'
+    id 'io.spring.dependency-management' version '1.1.2'
     id 'jacoco'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'org.flywaydb.flyway' version '9.16.0'
@@ -77,6 +77,8 @@ dependencies {
     implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
     implementation 'net.logstash.logback:logstash-logback-encoder:6.1'
 
+    implementation 'commons-io:commons-io:2.13.0'
+    implementation 'org.yaml:snakeyaml:2.0'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

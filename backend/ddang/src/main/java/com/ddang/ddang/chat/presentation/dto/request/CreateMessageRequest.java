@@ -1,5 +1,6 @@
 package com.ddang.ddang.chat.presentation.dto.request;
 
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -8,7 +9,7 @@ public record CreateMessageRequest(
         @Positive(message = "수신자 아이디는 양수입니다.")
         Long receiverId,
 
-        @NotNull(message = "메시지 내용이 입력되지 않았습니다.")
+        @NotEmpty(message = "메시지 내용이 입력되지 않았습니다.")
         String content
 ) {
 }

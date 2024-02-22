@@ -1,11 +1,16 @@
 package com.ddang.ddang.region.application;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
+
 import com.ddang.ddang.region.application.dto.response.ReadRegionDto;
 import com.ddang.ddang.region.application.exception.RegionNotFoundException;
 import com.ddang.ddang.region.application.fixture.RegionServiceFixture;
 import com.ddang.ddang.region.domain.InitializationRegionProcessor;
 import com.ddang.ddang.region.domain.Region;
 import com.ddang.ddang.region.domain.repository.RegionRepository;
+import java.util.ArrayList;
+import java.util.List;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -14,12 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
@@ -102,7 +101,7 @@ class RegionServiceTest extends RegionServiceFixture {
         // when & then
         assertThatThrownBy(() -> regionService.readAllSecondByFirstRegionId(두번째_지역이_없는_첫번째_지역.getId()))
                 .isInstanceOf(RegionNotFoundException.class)
-                .hasMessage("지정한 첫 번째 지역에 해당하는 두 번째 지역이 없습니다.");
+                .hasMessage("지정한 지역이 없습니다.");
     }
 
     @Test
@@ -124,6 +123,6 @@ class RegionServiceTest extends RegionServiceFixture {
         // when & then
         assertThatThrownBy(() -> regionService.readAllThirdByFirstAndSecondRegionId(서울특별시.getId(), 세번째_지역이_없는_두번째_지역.getId()))
                 .isInstanceOf(RegionNotFoundException.class)
-                .hasMessage("지정한 첫 번째와 두 번째 지역에 해당하는 세 번째 지역이 없습니다.");
+                .hasMessage("지정한 지역이 없습니다.");
     }
 }

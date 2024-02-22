@@ -21,11 +21,13 @@ public class BidPrice {
     private int value;
 
     public BidPrice(final int value) {
-        if (value < MINIMUM_PRICE) {
-            throw new InvalidBidPriceException(String.format("가격은 %d원 이상이어야 합니다.", MINIMUM_PRICE));
-        }
-        if (value > MAXIMUM_PRICE) {
-            throw new InvalidBidPriceException(String.format("가격은 %d원 이하여야 합니다.", MAXIMUM_PRICE));
+        if (value < MINIMUM_PRICE || value > MAXIMUM_PRICE) {
+            throw new InvalidBidPriceException(
+                    String.format(
+                            "가격은 %d원 이하, %d원 이상이어야 합니다. 입력값 : %d",
+                            MINIMUM_PRICE, MINIMUM_PRICE, value
+                    )
+            );
         }
 
         this.value = value;

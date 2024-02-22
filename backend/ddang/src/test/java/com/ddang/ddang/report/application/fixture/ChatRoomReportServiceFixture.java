@@ -66,35 +66,34 @@ public class ChatRoomReportServiceFixture {
         final Long 존재하지_않는_사용자_아이디 = -9999L;
         final Long 존재하지_않는_채팅방_아이디 = -9999L;
 
-        final ProfileImage 프로필_이미지 = new ProfileImage("프로필.jpg", "프로필.jpg");
         final User 판매자 = User.builder()
                              .name("판매자")
-                             .profileImage(프로필_이미지)
+                             .profileImage(new ProfileImage("upload.png", "store.png"))
                              .reliability(new Reliability(4.7d))
                              .oauthId("12345")
                              .build();
         final User 판매자겸_아직_신고하지_않은_신고자 = 판매자;
         이미_신고한_구매자1 = User.builder()
                           .name("구매자1")
-                          .profileImage(프로필_이미지)
+                          .profileImage(new ProfileImage("upload.png", "store.png"))
                           .reliability(new Reliability(4.7d))
                           .oauthId("12346")
                           .build();
         이미_신고한_구매자2 = User.builder()
                           .name("구매자2")
-                          .profileImage(프로필_이미지)
+                          .profileImage(new ProfileImage("upload.png", "store.png"))
                           .reliability(new Reliability(4.7d))
                           .oauthId("12347")
                           .build();
         이미_신고한_구매자3 = User.builder()
                           .name("구매자3")
-                          .profileImage(프로필_이미지)
+                          .profileImage(new ProfileImage("upload.png", "store.png"))
                           .reliability(new Reliability(4.7d))
                           .oauthId("12348")
                           .build();
         final User 채팅방_참여자가_아닌_사용자 = User.builder()
                                          .name("채팅방_참여자가_아닌_사용자")
-                                         .profileImage(프로필_이미지)
+                                         .profileImage(new ProfileImage("upload.png", "store.png"))
                                          .reliability(new Reliability(4.7d))
                                          .oauthId("12349")
                                          .build();
@@ -142,7 +141,7 @@ public class ChatRoomReportServiceFixture {
         final ChatRoomReport 채팅방_신고2 = new ChatRoomReport(이미_신고한_구매자2, 채팅방2, "신고합니다.");
         final ChatRoomReport 채팅방_신고3 = new ChatRoomReport(이미_신고한_구매자3, 채팅방3, "신고합니다.");
 
-        profileImageRepository.save(프로필_이미지);
+        profileImageRepository.save(new ProfileImage("upload.png", "store.png"));
 
         userRepository.save(판매자겸_아직_신고하지_않은_신고자);
         userRepository.save(이미_신고한_구매자1);

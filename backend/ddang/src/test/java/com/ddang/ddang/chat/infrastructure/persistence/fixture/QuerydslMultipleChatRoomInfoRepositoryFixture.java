@@ -77,29 +77,28 @@ public class QuerydslMultipleChatRoomInfoRepositoryFixture {
     void setUp() {
         final Category 전자기기_카테고리 = new Category("전자기기");
         final Category 전자기기_서브_노트북_카테고리 = new Category("노트북 카테고리");
-        final ProfileImage 프로필_이미지 = new ProfileImage("upload.png", "store.png");
 
         엔초 = User.builder()
                  .name("엔초")
-                 .profileImage(프로필_이미지)
+                 .profileImage(new ProfileImage("upload.png", "store.png"))
                  .reliability(new Reliability(4.7d))
                  .oauthId("12346")
                  .build();
         메리 = User.builder()
                  .name("메리")
-                 .profileImage(프로필_이미지)
+                 .profileImage(new ProfileImage("upload.png", "store.png"))
                  .reliability(new Reliability(4.7d))
                  .oauthId("12345")
                  .build();
         final User 제이미 = User.builder()
                              .name("제이미")
-                             .profileImage(프로필_이미지)
+                             .profileImage(new ProfileImage("upload.png", "store.png"))
                              .reliability(new Reliability(4.7d))
                              .oauthId("12347")
                              .build();
         final User 지토 = User.builder()
                             .name("지토")
-                            .profileImage(프로필_이미지)
+                            .profileImage(new ProfileImage("upload.png", "store.png"))
                             .reliability(new Reliability(4.7d))
                             .oauthId("12348")
                             .build();

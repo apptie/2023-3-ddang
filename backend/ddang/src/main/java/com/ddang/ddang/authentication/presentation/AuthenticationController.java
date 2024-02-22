@@ -3,6 +3,7 @@ package com.ddang.ddang.authentication.presentation;
 import com.ddang.ddang.authentication.application.AuthenticationService;
 import com.ddang.ddang.authentication.application.BlackListTokenService;
 import com.ddang.ddang.authentication.application.SocialUserInformationService;
+import com.ddang.ddang.authentication.application.dto.request.RequestLoginDeviceTokenDto;
 import com.ddang.ddang.authentication.application.dto.response.LoginInfoDto;
 import com.ddang.ddang.authentication.application.dto.response.SocialUserInfoDto;
 import com.ddang.ddang.authentication.application.dto.response.TokenDto;
@@ -40,10 +41,15 @@ public class AuthenticationController {
             @PathVariable final Oauth2Type oauth2Type,
             @RequestBody final LoginTokenRequest request
     ) {
-        final SocialUserInfoDto socialUserInfoDto =
-                socialUserInformationService.findInformation(oauth2Type, request.accessToken());
-        final LoginInfoDto loginInfoDto =
-                authenticationService.login(socialUserInfoDto.id(), oauth2Type, request.deviceToken());
+        final SocialUserInfoDto socialUserInfoDto = socialUserInformationService.findInformation(
+                oauth2Type,
+                request.accessToken()
+        );
+        final LoginInfoDto loginInfoDto = authenticationService.login(
+                socialUserInfoDto.id(),
+                oauth2Type,
+                RequestLoginDeviceTokenDto.from(request)
+        );
 
         return ResponseEntity.ok(LoginInformationResponse.from(loginInfoDto));
     }

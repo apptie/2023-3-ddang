@@ -1,6 +1,7 @@
 package com.ddang.ddang.authentication.application;
 
 import com.ddang.ddang.auction.domain.repository.AuctionRepository;
+import com.ddang.ddang.authentication.application.dto.request.RequestLoginDeviceTokenDto;
 import com.ddang.ddang.authentication.application.dto.response.LoginInfoDto;
 import com.ddang.ddang.authentication.application.dto.response.LoginUserInfoDto;
 import com.ddang.ddang.authentication.application.dto.response.TokenDto;
@@ -49,11 +50,11 @@ public class AuthenticationService {
     public LoginInfoDto login(
             final String socialId,
             final Oauth2Type oauth2Type,
-            final String deviceToken
+            final RequestLoginDeviceTokenDto deviceTokenDto
     ) {
         final LoginUserInfoDto loginUserInfo = findOrPersistUser(socialId, oauth2Type);
 
-        updateOrPersistDeviceToken(deviceToken, loginUserInfo.user());
+        updateOrPersistDeviceToken(deviceTokenDto, loginUserInfo.user());
 
         return LoginInfoDto.of(convertTokenDto(loginUserInfo), loginUserInfo);
     }
@@ -80,8 +81,8 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
-    private void updateOrPersistDeviceToken(final String deviceToken, final User persistUser) {
-        final CreateDeviceTokenDto createDeviceTokenDto = new CreateDeviceTokenDto(deviceToken);
+    private void updateOrPersistDeviceToken(final RequestLoginDeviceTokenDto deviceTokenDto, final User persistUser) {
+        final CreateDeviceTokenDto createDeviceTokenDto = CreateDeviceTokenDto.from(deviceTokenDto);
 
         deviceTokenService.persist(persistUser.getId(), createDeviceTokenDto);
     }
@@ -151,11 +152,9 @@ public class AuthenticationService {
     private void validateCanWithdrawal(final User user) {
         final LocalDateTime now = LocalDateTime.now();
 
-        if (auctionRepository.existsBySellerIdAndAuctionStatusIsOngoing(user.getId(), now)) {
-            throw new WithdrawalNotAllowedException("등록한 경매 중 현재 진행 중인 것이 있기에 탈퇴할 수 없습니다.");
-        }
-        if (auctionRepository.existsLastBidByUserIdAndAuctionStatusIsOngoing(user.getId(), now)) {
-            throw new WithdrawalNotAllowedException("마지막 입찰자로 등록되어 있는 것이 있기에 탈퇴할 수 없습니다.");
+        if (auctionRepository.existsBySellerIdAndAuctionStatusIsOngoing(user.getId(), now)
+                || auctionRepository.existsLastBidByUserIdAndAuctionStatusIsOngoing(user.getId(), now)) {
+            throw new WithdrawalNotAllowedException("진행 중인 경매가 있기 때문에 탈퇴할 수 없습니다.");
         }
     }
 }

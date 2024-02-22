@@ -22,7 +22,7 @@ public class BidControllerFixture extends CommonControllerSliceTest {
     protected CreateBidRequest 경매_아이디_없이_입찰_request = new CreateBidRequest(null, 10_000);
     protected static CreateBidRequest 경매_아이디가_양수가_아닌_입찰_request1 = new CreateBidRequest(-1L, 10_000);
     protected static CreateBidRequest 경매_아이디가_양수가_아닌_입찰_request2 = new CreateBidRequest(0L, 10_000);
-    protected CreateBidRequest 입찰액_없이_입찰_request = new CreateBidRequest(1L, null);
+    protected CreateBidRequest 입찰액_없이_입찰_request = new CreateBidRequest(1L, 0);
     protected static CreateBidRequest 입찰액이_양수가_아닌_입찰_request1 = new CreateBidRequest(1L, -1);
     protected static CreateBidRequest 입찰액이_양수가_아닌_입찰_request2 = new CreateBidRequest(1L, 0);
 

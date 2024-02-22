@@ -1,6 +1,6 @@
 package com.ddang.ddang.region.presentation;
 
-import com.ddang.ddang.exception.GlobalExceptionHandler;
+import com.ddang.ddang.common.exception.GlobalExceptionHandler;
 import com.ddang.ddang.region.application.exception.RegionNotFoundException;
 import com.ddang.ddang.region.presentation.fixture.RegionControllerFixture;
 import org.junit.jupiter.api.BeforeEach;
