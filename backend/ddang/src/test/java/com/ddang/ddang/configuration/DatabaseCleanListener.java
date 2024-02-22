@@ -49,13 +49,21 @@ public class DatabaseCleanListener extends AbstractTestExecutionListener {
 
     private void clean(final EntityManager em, final List<String> tableNames) {
         em.flush();
-        em.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
+
+        final StringBuilder sb = new StringBuilder("SET REFERENTIAL_INTEGRITY FALSE;");
 
         for (final String tableName : tableNames) {
-            em.createNativeQuery("TRUNCATE TABLE " + tableName).executeUpdate();
-            em.createNativeQuery("ALTER TABLE " + tableName + " ALTER COLUMN id RESTART WITH 1").executeUpdate();
+            sb.append("TRUNCATE TABLE ")
+              .append(tableName)
+              .append(";");
+
+            sb.append("ALTER TABLE ")
+              .append(tableName)
+              .append(" ALTER COLUMN id RESTART WITH 1;");
         }
 
-        em.createNativeQuery("SET REFERENTIAL_INTEGRITY TRUE").executeUpdate();
+        sb.append("SET REFERENTIAL_INTEGRITY TRUE;");
+
+        em.createNativeQuery(sb.toString()).executeUpdate();
     }
 }
