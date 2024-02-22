@@ -42,7 +42,7 @@ public class RegionService {
         final List<Region> secondRegions = regionRepository.findSecondAllByFirstRegionId(firstRegionId);
 
         if (secondRegions.isEmpty()) {
-            throw new RegionNotFoundException("지정한 첫 번째 지역에 해당하는 두 번째 지역이 없습니다.");
+            throw new RegionNotFoundException("지정한 지역이 없습니다.");
         }
 
         return secondRegions.stream()
@@ -60,7 +60,7 @@ public class RegionService {
         );
 
         if (thirdRegions.isEmpty()) {
-            throw new RegionNotFoundException("지정한 첫 번째와 두 번째 지역에 해당하는 세 번째 지역이 없습니다.");
+            throw new RegionNotFoundException("지정한 지역이 없습니다.");
         }
 
         return thirdRegions.stream()
