@@ -191,6 +191,6 @@ class BidServiceTest extends BidServiceFixture {
         // when & then
         assertThatThrownBy(() -> bidService.readAllByAuctionId(존재하지_않는_경매_아이디))
                 .isInstanceOf(AuctionNotFoundException.class)
-                .hasMessage("해당 경매를 찾을 수 없습니다.");
+                .hasMessage("지정한 경매를 찾을 수 없습니다.");
     }
 }

@@ -131,6 +131,6 @@ public class BidService {
                        .toList();
         }
 
-        throw new AuctionNotFoundException("해당 경매를 찾을 수 없습니다.");
+        throw new AuctionNotFoundException("지정한 경매를 찾을 수 없습니다.");
     }
 }
